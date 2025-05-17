@@ -7,15 +7,15 @@ const enum Type {
 
 const enum FieldType {
   STRING = "string",
-  NUMBER = "number",
   BOOLEAN = "boolean",
+  NUMBER = "number",
   ARRAY = "array",
 }
 
 const enum ArrayType {
   STRING = "string",
-  NUMBER = "number",
   BOOLEAN = "boolean",
+  NUMBER = "number",
   INT8 = "int8",
   INT16 = "int16",
   INT32 = "int32",
@@ -85,21 +85,17 @@ for (const block of blocks) {
             case ArrayType.FLOAT64:
               output.push(`export const ${fieldName} = new Float64Array(${length})`);
               break;
-            default:
-              {
-                switch (fieldArrayType) {
-                  case ArrayType.STRING:
-                    output.push(`export const ${fieldName} = new Array<string>(${length})${length ? '.fill("")' : ""}`);
-                    break;
-                  case ArrayType.BOOLEAN:
-                    output.push(`export const ${fieldName} = new Array<boolean>(${length})${length ? ".fill(false)" : ""}`);
-                    break;
-                  case ArrayType.NUMBER:
-                    output.push(`export const ${fieldName} = new Array<number>(${length})${length ? ".fill(0)" : ""}`);
-                    break;
-                }
-              }
+            case ArrayType.STRING:
+              output.push(`export const ${fieldName} = new Array<string>(${length})${length ? '.fill("")' : ""}`);
               break;
+            case ArrayType.BOOLEAN:
+              output.push(`export const ${fieldName} = new Array<boolean>(${length})${length ? ".fill(false)" : ""}`);
+              break;
+            case ArrayType.NUMBER:
+              output.push(`export const ${fieldName} = new Array<number>(${length})${length ? ".fill(0)" : ""}`);
+              break;
+            default:
+              output.push(`export const ${fieldName} = new Array<${fieldArrayType}>(${length})`);
           }
         }
         break;
@@ -157,7 +153,6 @@ function zeroIndex(name: string, type: string, arrayType: string, variableName: 
             break;
           default:
             output.push(`  ${name}[${variableName}] = 0`);
-            break;
         }
       }
       break;
@@ -181,7 +176,6 @@ function zeroField(name: string, type: string, arrayType: string, length: string
             break;
           default:
             output.push(`  ${name}.${length ? "fill(0)" : "length = 0"}`);
-            break;
         }
       }
       break;
