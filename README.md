@@ -90,7 +90,9 @@ In case of a Structure of Arrays data structure (type=soa), setting the length o
 
 ## Example
 
-Create a plain text file somewhere in your source code (it does not need a file extension). For example `src/data/game`:
+Create a plain text file somewhere in your source code (it does not need a file extension).
+
+For example `src/data/game`:
 
 ```
 Game
