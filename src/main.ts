@@ -1,5 +1,4 @@
 import fs from "fs-extra";
-import path from "path";
 
 const enum Type {
   SOA = "soa",
@@ -27,7 +26,7 @@ const enum ArrayType {
 }
 
 const inputFile = process.argv[2];
-const outputFile = process.argv[3] || path.join(path.dirname(inputFile), `${path.basename(inputFile)}.ts`);
+const outputFile = process.argv[3] || `${inputFile}.ts`;
 const input = fs.readFileSync(inputFile, "utf-8");
 const output: Array<string> = [];
 
