@@ -171,4 +171,4 @@ export function zeroEntityData() {
 }
 ```
 
-Then import the data and its functions from `src/data/game.ts` into your code.
+Then import the data and its functions from `src/data/game.ts` in your code.
