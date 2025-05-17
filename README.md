@@ -86,7 +86,7 @@ Supported array field types:
 
 The length of the array field.
 
-In case of a Structure of Arrays data structure (type=soa), setting the length on the type is recommended so that all arrays have the same length.
+In case of a Structure of Arrays data structure (type=soa), setting the length on the type instead is recommended so that all arrays have the same length.
 
 ## Example
 
