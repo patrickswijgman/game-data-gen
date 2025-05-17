@@ -5,15 +5,16 @@
   "files": [
     "dist"
   ],
-  "main": "dist/game-data-gen.js",
+  "main": "dist/main.js",
   "exports": null,
   "scripts": {
     "start": "tsx watch src/main.ts tests/data",
-    "build": "tsc"
+    "build": "tsc && esbuild src/main.ts --bundle --platform=node --target=es6 --outdir=dist"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.15.18",
+    "esbuild": "^0.25.4",
     "tsx": "^4.19.4",
     "typescript": "~5.8.3"
   },
