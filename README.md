@@ -1,16 +1,16 @@
 # Game Data Generation
 
-A Typescript library to generate data structures with zeroing functions.
+A Javascript (Typescript) library to generate data structures with zeroing functions.
 
 ## The problems
 
 If you're making a game in Javascript then you might (this was actually me):
 
-- hit the Garbage Collector a bunch causing frame drops because you're creating/destroying objects every frame (particles, for example)
+- hit the garbage collector (GC) a bunch causing frame drops because you're creating/destroying objects every frame (particles, for example)
 - read a book about [Data Oriented Design](https://www.amazon.com/dp/1916478700)
-- notice the performance implications of OOP (especially classes and calling their methods)
-- wanting to implement Structure of Arrays instead of Array of Structures (which is a list of class instances)
-- notice that Javascript can not zero out memory like languages such as C and Rust
+- notice the performance implications of OOP (especially classes and calling their methods) versus using something like Structure of Arrays
+- wanting to implement Structure of Arrays instead of Array of Structures (which is a list of class instances, see previous point)
+- notice that Javascript can not simply zero out data structures (resetting all data back to initial values) like languages such as C and Rust
 
 ## The solution
 
@@ -38,11 +38,11 @@ name type? length?
 fieldName fieldType fieldArrayType? fieldArrayLength?
 ```
 
-### name
+`name`
 
 The name of the data structure.
 
-### type (optional)
+`type` (optional)
 
 Supported data structure types:
 
@@ -50,23 +50,23 @@ Supported data structure types:
 
 If no type is given, it will act as a group which gets a zero function for the whole group.
 
-### length (optional)
+`length` (optional)
 
 The length of the arrays within the Structure of Arrays data structure.
 
 If no length is given to the type and no length is given to a field it is considered a dynamic array and zeroing will set the array's length back to zero (emptying it).
 
-### fieldName
+`fieldName`
 
 The name of one of the fields within the data structure.
 
-### fieldType
+`fieldType`
 
 Supported field types:
 
 - array
 
-### fieldArrayType (optional, required if fieldType=array)
+`fieldArrayType` (optional, required if fieldType=array)
 
 Supported array field types:
 
@@ -80,7 +80,7 @@ Supported array field types:
 - float32
 - float64
 
-### fieldArrayLength (optional)
+`fieldArrayLength` (optional)
 
 The length of the array field.
 
