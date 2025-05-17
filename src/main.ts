@@ -1,4 +1,4 @@
-import fs from "fs-extra";
+import fs from "fs";
 
 const enum Type {
   SOA = "soa",
@@ -47,7 +47,7 @@ for (const block of blocks) {
   output.push("");
   output.push("/*");
   output.push(` * ${"-".repeat(50)}`);
-  output.push(` * ${name}`);
+  output.push(` * ${name} (${getTypeName(type)})`);
   output.push(` * ${"-".repeat(50)}`);
   output.push(" */");
   output.push("");

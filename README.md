@@ -115,7 +115,7 @@ This will create or update the `src/data/game.ts` file:
 ```typescript
 /*
  * --------------------------------------------------
- * Game
+ * Game (group)
  * --------------------------------------------------
  */
 
@@ -133,7 +133,7 @@ export function zeroGameData() {
 
 /*
  * --------------------------------------------------
- * Entity
+ * Entity (Structure of Arrays)
  * --------------------------------------------------
  */
 

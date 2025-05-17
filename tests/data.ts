@@ -1,10 +1,10 @@
 /*
- * Generated with game-data-gen on 5/17/2025, 10:22:18 AM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 5/17/2025, 12:40:47 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
  * --------------------------------------------------
- * Game
+ * Game (group)
  * --------------------------------------------------
  */
 
@@ -22,7 +22,7 @@ export function zeroGameData() {
 
 /*
  * --------------------------------------------------
- * Entity
+ * Entity (Structure of Arrays)
  * --------------------------------------------------
  */
 
