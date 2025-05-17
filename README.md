@@ -70,6 +70,8 @@ Supported field types:
 
 Supported array field types:
 
+- string
+- boolean
 - number
 - int8
 - int16
