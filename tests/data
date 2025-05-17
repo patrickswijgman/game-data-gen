@@ -1,0 +1,7 @@
+Game
+activeEntities array number
+
+Entity soa 2048
+posX array float32
+posY array float32
+isActive array uint8

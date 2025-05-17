@@ -1,0 +1,23 @@
+{
+  "name": "game-data-gen",
+  "version": "1.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/game-data-gen.js",
+  "exports": null,
+  "scripts": {
+    "start": "tsx watch src/main.ts tests/data",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.15.18",
+    "tsx": "^4.19.4",
+    "typescript": "~5.8.3"
+  },
+  "dependencies": {
+    "fs-extra": "^11.3.0"
+  }
+}
