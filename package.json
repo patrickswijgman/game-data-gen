@@ -11,6 +11,10 @@
     "start": "tsx watch src/main.ts tests/data",
     "build": "tsc && esbuild src/main.ts --bundle --platform=node --target=es6 --outdir=dist"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/patrickswijgman/game-data-gen"
+  },
   "devDependencies": {
     "@types/node": "^22.15.18",
     "esbuild": "^0.25.4",
