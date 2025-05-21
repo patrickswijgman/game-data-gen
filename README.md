@@ -100,7 +100,7 @@ activeEntities array number
 
 Entity soa 2048
 posX array float32
-posy array float32
+posY array float32
 isActive array uint8
 ```
 
@@ -136,6 +136,8 @@ export function zeroGameData() {
  * Entity (Structure of Arrays)
  * --------------------------------------------------
  */
+
+export const MAX_ENTITY_COUNT = 2048;
 
 export const posX = new Float32Array(2048);
 export const posY = new Float32Array(2048);
