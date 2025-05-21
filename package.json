@@ -5,8 +5,7 @@
   "files": [
     "dist"
   ],
-  "main": "dist/main.js",
-  "exports": null,
+  "bin": "dist/main.js",
   "scripts": {
     "start": "tsx watch src/main.ts tests/data",
     "build": "tsc && esbuild src/main.ts --bundle --platform=node --target=es6 --outdir=dist"
