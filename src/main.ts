@@ -52,6 +52,11 @@ for (const block of blocks) {
   output.push(" */");
   output.push("");
 
+  if (type === Type.SOA) {
+    output.push(`export const MAX_${name.toUpperCase()}_COUNT = ${baseLength}`);
+    output.push("");
+  }
+
   for (const field of fields) {
     const [fieldName, fieldType, fieldArrayType, fieldLength] = field.split(" ");
     const length = baseLength || fieldLength || "";

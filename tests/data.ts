@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 5/21/2025, 8:24:49 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 5/21/2025, 8:38:39 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -25,6 +25,8 @@ export function zeroGameData() {
  * Entity (Structure of Arrays)
  * --------------------------------------------------
  */
+
+export const MAX_ENTITY_COUNT = 2048
 
 export const posX = new Float32Array(2048)
 export const posY = new Float32Array(2048)
