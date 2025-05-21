@@ -8,7 +8,8 @@
   "bin": "dist/main.js",
   "scripts": {
     "start": "tsx watch src/main.ts tests/data",
-    "build": "tsc && esbuild src/main.ts --bundle --platform=node --target=es6 --outdir=dist"
+    "build": "tsc && esbuild src/main.ts --bundle --platform=node --format=esm --target=es6 --outdir=dist --banner:js='#!/usr/bin/env node'",
+    "test": "npx game-data-gen src/tests/data"
   },
   "repository": {
     "type": "git",
