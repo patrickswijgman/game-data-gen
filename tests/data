@@ -1,5 +1,6 @@
 Game
 activeEntities array number
+playerIdx number
 
 Entity soa 2048
 posX array float32

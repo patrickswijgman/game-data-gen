@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 5/21/2025, 8:38:39 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 9/14/2025, 12:03:25 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -9,15 +9,22 @@
  */
 
 export const activeEntities = new Array<number>()
+export let playerIdx = 0
 
 /** Zero the activeEntities field within the Game group. */
 export function zeroActiveEntities() {
   activeEntities.length = 0
 }
 
+/** Zero the playerIdx field within the Game group. */
+export function zeroPlayerIdx() {
+  playerIdx = 0
+}
+
 /** Zero all fields within the Game group. */
 export function zeroGameData() {
   activeEntities.length = 0
+  playerIdx = 0
 }
 
 /*

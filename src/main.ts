@@ -62,6 +62,15 @@ for (const block of blocks) {
     const length = baseLength || fieldLength || "";
 
     switch (fieldType) {
+      case FieldType.STRING:
+        output.push(`export let ${fieldName} = ""`);
+        break;
+      case FieldType.BOOLEAN:
+        output.push(`export let ${fieldName} = false`);
+        break;
+      case FieldType.NUMBER:
+        output.push(`export let ${fieldName} = 0`);
+        break;
       case FieldType.ARRAY:
         {
           switch (fieldArrayType) {
@@ -106,14 +115,23 @@ for (const block of blocks) {
     }
   }
 
-  // Zero data on index.
+  // Zero data for an index within a Structure of Arrays.
   if (type === Type.SOA) {
     output.push("");
     output.push(`/** Zero an index within the ${name} ${getTypeName(type)}. */`);
     output.push(`export function zero${capitalize(name)}(idx: number) {`);
     for (const field of fields) {
-      const [fieldName, fieldType, fieldArrayType] = field.split(" ");
-      zeroIndex(fieldName, fieldType, fieldArrayType, "idx");
+      const [fieldName, _, fieldArrayType] = field.split(" ");
+      switch (fieldArrayType) {
+        case ArrayType.STRING:
+          output.push(`  ${fieldName}[idx] = ""`);
+          break;
+        case ArrayType.BOOLEAN:
+          output.push(`  ${fieldName}[idx] = false`);
+          break;
+        default:
+          output.push(`  ${fieldName}[idx] = 0`);
+      }
     }
     output.push("}");
   }
@@ -142,33 +160,19 @@ for (const block of blocks) {
 }
 
 /**
- * Zero an index within a structure of arrays.
- */
-function zeroIndex(name: string, type: string, arrayType: string, variableName: string) {
-  switch (type) {
-    case FieldType.ARRAY:
-      {
-        switch (arrayType) {
-          case ArrayType.STRING:
-            output.push(`  ${name}[${variableName}] = ""`);
-            break;
-          case ArrayType.BOOLEAN:
-            output.push(`  ${name}[${variableName}] = false`);
-            break;
-          default:
-            output.push(`  ${name}[${variableName}] = 0`);
-        }
-      }
-      break;
-  }
-}
-
-/**
- * Zero a field within a group.
- * If the field is an array and has a dynamic length it will be set to 0, otherwise it's filled with a zero-value.
+ * Zero a field. If the field is an array and has a dynamic length it will be set to 0, otherwise it's filled with a zero-value.
  */
 function zeroField(name: string, type: string, arrayType: string, length: string) {
   switch (type) {
+    case FieldType.STRING:
+      output.push(`  ${name} = ""`);
+      break;
+    case FieldType.BOOLEAN:
+      output.push(`  ${name} = false`);
+      break;
+    case FieldType.NUMBER:
+      output.push(`  ${name} = 0`);
+      break;
     case FieldType.ARRAY:
       {
         switch (arrayType) {
