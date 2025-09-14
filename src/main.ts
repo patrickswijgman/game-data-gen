@@ -115,6 +115,22 @@ for (const block of blocks) {
     }
   }
 
+  // Setters for primitive fields.
+  for (const field of fields) {
+    const [fieldName, fieldType] = field.split(" ");
+    switch (fieldType) {
+      case FieldType.STRING:
+      case FieldType.BOOLEAN:
+      case FieldType.NUMBER:
+        output.push("");
+        output.push(`/** Set the value of the ${fieldName} field within the ${name} ${getTypeName(type)}. */`);
+        output.push(`export function set${capitalize(fieldName)}(value: ${fieldType}) {`);
+        output.push(`  ${fieldName} = value`);
+        output.push("}");
+        break;
+    }
+  }
+
   // Zero data for an index within a Structure of Arrays.
   if (type === Type.SOA) {
     output.push("");

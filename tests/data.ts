@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 9/14/2025, 12:03:25 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 9/14/2025, 12:32:30 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -10,6 +10,11 @@
 
 export const activeEntities = new Array<number>()
 export let playerIdx = 0
+
+/** Set the value of the playerIdx field within the Game group. */
+export function setPlayerIdx(value: number) {
+  playerIdx = value
+}
 
 /** Zero the activeEntities field within the Game group. */
 export function zeroActiveEntities() {
