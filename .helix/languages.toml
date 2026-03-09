@@ -1,0 +1,8 @@
+[language-server.typescript-language-server.config]
+preferences.importModuleSpecifierPreference = "non-relative"
+preferences.importModuleSpecifierEnding = "js"
+
+[[language]]
+name = "typescript"
+formatter = { command = "prettierd", args = [".ts"] }
+auto-format = true
