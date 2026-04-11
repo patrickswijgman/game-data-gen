@@ -1,8 +1,19 @@
-Game
-activeEntities array number
-playerIdx number
+game group
 
-Entity soa 2048
-posX array float32
-posY array float32
-isActive array uint8
+particle soa 2048
+posX array number
+posY array number
+
+vector struct
+x number
+y number
+
+entity struct
+pos Vector
+vel Vector
+items array number
+flags array boolean 8
+health number
+isActive boolean
+
+entities aos Entity 2048

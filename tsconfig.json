@@ -3,17 +3,20 @@
     "target": "ES6",
     "module": "NodeNext",
     "moduleResolution": "nodenext",
+    "types": ["node"],
+    "skipLibCheck": true,
 
     "noEmit": true,
-
     "esModuleInterop": true,
+
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
 
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-
-    "skipLibCheck": true
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src"]
 }

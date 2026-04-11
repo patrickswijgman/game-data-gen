@@ -1,29 +1,10 @@
 import fs from "fs";
-
-const enum Type {
-  SOA = "soa",
-}
-
-const enum FieldType {
-  STRING = "string",
-  BOOLEAN = "boolean",
-  NUMBER = "number",
-  ARRAY = "array",
-}
-
-const enum ArrayType {
-  STRING = "string",
-  BOOLEAN = "boolean",
-  NUMBER = "number",
-  INT8 = "int8",
-  INT16 = "int16",
-  INT32 = "int32",
-  UINT8 = "uint8",
-  UINT16 = "uint16",
-  UINT32 = "uint32",
-  FLOAT32 = "float32",
-  FLOAT64 = "float64",
-}
+import { Type } from "./consts.ts";
+import { getTypeName } from "./lib/utils.ts";
+import { addStructureOfArrays } from "./lib/soa.ts";
+import { addGroup } from "./lib/group.ts";
+import { addStruct } from "./lib/struct.ts";
+import { addArrayOfStructures } from "./lib/aos.ts";
 
 const inputFile = process.argv[2];
 const outputFile = process.argv[3] || `${inputFile}.ts`;
@@ -42,7 +23,7 @@ for (const block of blocks) {
 
   if (!header) continue;
 
-  const [name, type, baseLength] = header.split(" ");
+  const [name, type] = header.split(" ");
 
   output.push("");
   output.push("/*");
@@ -50,179 +31,21 @@ for (const block of blocks) {
   output.push(` * ${name} (${getTypeName(type)})`);
   output.push(` * ${"-".repeat(50)}`);
   output.push(" */");
-  output.push("");
 
-  if (type === Type.SOA) {
-    output.push(`export const MAX_${name.toUpperCase()}_COUNT = ${baseLength}`);
-    output.push("");
-  }
-
-  for (const field of fields) {
-    const [fieldName, fieldType, fieldArrayType, fieldLength] = field.split(" ");
-    const length = baseLength || fieldLength || "";
-
-    switch (fieldType) {
-      case FieldType.STRING:
-        output.push(`export let ${fieldName} = ""`);
-        break;
-      case FieldType.BOOLEAN:
-        output.push(`export let ${fieldName} = false`);
-        break;
-      case FieldType.NUMBER:
-        output.push(`export let ${fieldName} = 0`);
-        break;
-      case FieldType.ARRAY:
-        {
-          switch (fieldArrayType) {
-            case ArrayType.INT8:
-              output.push(`export const ${fieldName} = new Int8Array(${length})`);
-              break;
-            case ArrayType.INT16:
-              output.push(`export const ${fieldName} = new Int16Array(${length})`);
-              break;
-            case ArrayType.INT32:
-              output.push(`export const ${fieldName} = new Int32Array(${length})`);
-              break;
-            case ArrayType.UINT8:
-              output.push(`export const ${fieldName} = new Uint8Array(${length})`);
-              break;
-            case ArrayType.UINT16:
-              output.push(`export const ${fieldName} = new Uint16Array(${length})`);
-              break;
-            case ArrayType.UINT32:
-              output.push(`export const ${fieldName} = new Uint32Array(${length})`);
-              break;
-            case ArrayType.FLOAT32:
-              output.push(`export const ${fieldName} = new Float32Array(${length})`);
-              break;
-            case ArrayType.FLOAT64:
-              output.push(`export const ${fieldName} = new Float64Array(${length})`);
-              break;
-            case ArrayType.STRING:
-              output.push(`export const ${fieldName} = new Array<string>(${length})${length ? '.fill("")' : ""}`);
-              break;
-            case ArrayType.BOOLEAN:
-              output.push(`export const ${fieldName} = new Array<boolean>(${length})${length ? ".fill(false)" : ""}`);
-              break;
-            case ArrayType.NUMBER:
-              output.push(`export const ${fieldName} = new Array<number>(${length})${length ? ".fill(0)" : ""}`);
-              break;
-            default:
-              output.push(`export const ${fieldName} = new Array<${fieldArrayType}>(${length})`);
-          }
-        }
-        break;
-    }
-  }
-
-  // Setters for primitive fields.
-  for (const field of fields) {
-    const [fieldName, fieldType] = field.split(" ");
-    switch (fieldType) {
-      case FieldType.STRING:
-      case FieldType.BOOLEAN:
-      case FieldType.NUMBER:
-        output.push("");
-        output.push(`/** Set the value of the ${fieldName} field within the ${name} ${getTypeName(type)}. */`);
-        output.push(`export function set${capitalize(fieldName)}(value: ${fieldType}) {`);
-        output.push(`  ${fieldName} = value`);
-        output.push("}");
-        break;
-    }
-  }
-
-  // Zero data for an index within a Structure of Arrays.
-  if (type === Type.SOA) {
-    output.push("");
-    output.push(`/** Zero an index within the ${name} ${getTypeName(type)}. */`);
-    output.push(`export function zero${capitalize(name)}(idx: number) {`);
-    for (const field of fields) {
-      const [fieldName, _, fieldArrayType] = field.split(" ");
-      switch (fieldArrayType) {
-        case ArrayType.STRING:
-          output.push(`  ${fieldName}[idx] = ""`);
-          break;
-        case ArrayType.BOOLEAN:
-          output.push(`  ${fieldName}[idx] = false`);
-          break;
-        default:
-          output.push(`  ${fieldName}[idx] = 0`);
-      }
-    }
-    output.push("}");
-  }
-
-  // Zero field data.
-  for (const field of fields) {
-    const [fieldName, fieldType, fieldArrayType, fieldLength] = field.split(" ");
-    const length = baseLength || fieldLength || "";
-    output.push("");
-    output.push(`/** Zero the ${fieldName} field within the ${name} ${getTypeName(type)}. */`);
-    output.push(`export function zero${capitalize(fieldName)}() {`);
-    zeroField(fieldName, fieldType, fieldArrayType, length);
-    output.push("}");
-  }
-
-  // Zero group data.
-  output.push("");
-  output.push(`/** Zero all fields within the ${name} ${getTypeName(type)}. */`);
-  output.push(`export function zero${capitalize(name)}Data() {`);
-  for (const field of fields) {
-    const [fieldName, fieldType, fieldArrayType, fieldLength] = field.split(" ");
-    const length = baseLength || fieldLength || "";
-    zeroField(fieldName, fieldType, fieldArrayType, length);
-  }
-  output.push("}");
-}
-
-/**
- * Zero a field. If the field is an array and has a dynamic length it will be set to 0, otherwise it's filled with a zero-value.
- */
-function zeroField(name: string, type: string, arrayType: string, length: string) {
   switch (type) {
-    case FieldType.STRING:
-      output.push(`  ${name} = ""`);
+    case Type.STRUCT:
+      addStruct(header, fields, output);
       break;
-    case FieldType.BOOLEAN:
-      output.push(`  ${name} = false`);
+    case Type.GROUP:
+      addGroup(header, fields, output);
       break;
-    case FieldType.NUMBER:
-      output.push(`  ${name} = 0`);
-      break;
-    case FieldType.ARRAY:
-      {
-        switch (arrayType) {
-          case ArrayType.STRING:
-            output.push(`  ${name}.${length ? 'fill("")' : "length = 0"}`);
-            break;
-          case ArrayType.BOOLEAN:
-            output.push(`  ${name}.${length ? "fill(false)" : "length = 0"}`);
-            break;
-          default:
-            output.push(`  ${name}.${length ? "fill(0)" : "length = 0"}`);
-        }
-      }
-      break;
-  }
-}
-
-/**
- * Get the name based on the type of the data structure.
- */
-function getTypeName(type: string) {
-  switch (type) {
     case Type.SOA:
-      return "Structure of Arrays";
-    default:
-      return "group";
+      addStructureOfArrays(header, fields, output);
+      break;
+    case Type.AOS:
+      addArrayOfStructures(header, output);
+      break;
   }
-}
-
-/**
- * Capitalize the first letter of a string.
- */
-function capitalize(str: string) {
-  return `${str.substring(0, 1).toUpperCase()}${str.substring(1)}`;
 }
 
 fs.writeFileSync(outputFile, output.join("\n"));

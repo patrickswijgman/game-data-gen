@@ -6,3 +6,8 @@ preferences.importModuleSpecifierEnding = "js"
 name = "typescript"
 formatter = { command = "prettierd", args = [".ts"] }
 auto-format = true
+
+[[language]]
+name = "json"
+formatter = { command = "prettierd", args = [".json"] }
+auto-format = true
