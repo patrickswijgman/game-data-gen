@@ -36,40 +36,40 @@ function addStructCreateFunction(name: string, fields: Array<string>, output: Ar
   output.push("");
   output.push(`/** Create a new ${capitalize(name)} object. */`);
   output.push(`export function create${capitalize(name)}(): ${capitalize(name)} {`);
-  output.push(`  return {`);
+  output.push(`  const obj = Object.create(null)`);
   for (const field of fields) {
     const [fieldName, fieldType, fieldArrayType, fieldArrayLength = ""] = field.split(" ");
     switch (fieldType) {
       case FieldType.STRING:
-        output.push(`    ${fieldName}: "",`);
+        output.push(`  obj.${fieldName} = ""`);
         break;
       case FieldType.NUMBER:
-        output.push(`    ${fieldName}: 0,`);
+        output.push(`  obj.${fieldName} = 0`);
         break;
       case FieldType.BOOLEAN:
-        output.push(`    ${fieldName}: false,`);
+        output.push(`  obj.${fieldName} = false`);
         break;
       case FieldType.ARRAY:
         {
           switch (fieldArrayType) {
             case ArrayType.STRING:
-              output.push(`    ${fieldName}: new Array<string>(${fieldArrayLength})${fieldArrayLength ? '.fill("")' : ""},`);
+              output.push(`  obj.${fieldName} = new Array<string>(${fieldArrayLength})${fieldArrayLength ? '.fill("")' : ""}`);
               break;
             case ArrayType.NUMBER:
-              output.push(`    ${fieldName}: new Array<number>(${fieldArrayLength})${fieldArrayLength ? ".fill(0)" : ""},`);
+              output.push(`  obj.${fieldName} = new Array<number>(${fieldArrayLength})${fieldArrayLength ? ".fill(0)" : ""}`);
               break;
             case ArrayType.BOOLEAN:
-              output.push(`    ${fieldName}: new Array<boolean>(${fieldArrayLength})${fieldArrayLength ? ".fill(false)" : ""},`);
+              output.push(`  obj.${fieldName} = new Array<boolean>(${fieldArrayLength})${fieldArrayLength ? ".fill(false)" : ""}`);
               break;
           }
         }
         break;
       default: {
-        output.push(`    ${fieldName}: create${capitalize(fieldType)}(),`);
+        output.push(`  obj.${fieldName} = create${capitalize(fieldType)}()`);
       }
     }
   }
-  output.push("  }");
+  output.push("  return obj");
   output.push("}");
 }
 

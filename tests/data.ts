@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 4/11/2026, 4:18:15 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/11/2026, 4:32:53 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -33,10 +33,10 @@ export type Vector = {
 
 /** Create a new Vector object. */
 export function createVector(): Vector {
-  return {
-    x: 0,
-    y: 0,
-  }
+  const obj = Object.create(null)
+  obj.x = 0
+  obj.y = 0
+  return obj
 }
 
 /** Zero the given Vector object. */
@@ -60,12 +60,12 @@ export type Entity = {
 
 /** Create a new Entity object. */
 export function createEntity(): Entity {
-  return {
-    position: createVector(),
-    velocity: createVector(),
-    health: 0,
-    isActive: false,
-  }
+  const obj = Object.create(null)
+  obj.position = createVector()
+  obj.velocity = createVector()
+  obj.health = 0
+  obj.isActive = false
+  return obj
 }
 
 /** Zero the given Entity object. */

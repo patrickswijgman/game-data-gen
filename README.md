@@ -125,10 +125,6 @@ This will create or update the `src/data/game.ts` file which you can then import
 
 ```typescript
 /*
- * Generated with game-data-gen on 4/11/2026, 4:07:11 PM. DO NOT MODIFY THIS FILE!
- */
-
-/*
  * --------------------------------------------------
  * game (group)
  * --------------------------------------------------
@@ -159,10 +155,10 @@ export type Vector = {
 
 /** Create a new Vector object. */
 export function createVector(): Vector {
-  return {
-    x: 0,
-    y: 0,
-  }
+  const obj = Object.create(null)
+  obj.x = 0
+  obj.y = 0
+  return obj
 }
 
 /** Zero the given Vector object. */
@@ -178,26 +174,26 @@ export function zeroVector(obj: Vector) {
  */
 
 export type Entity = {
-  pos: Vector
-  vel: Vector
+  position: Vector
+  velocity: Vector
   health: number
   isActive: boolean
 }
 
 /** Create a new Entity object. */
 export function createEntity(): Entity {
-  return {
-    pos: createVector(),
-    vel: createVector(),
-    health: 0,
-    isActive: false,
-  }
+  const obj = Object.create(null)
+  obj.position = createVector()
+  obj.velocity = createVector()
+  obj.health = 0
+  obj.isActive = false
+  return obj
 }
 
 /** Zero the given Entity object. */
 export function zeroEntity(obj: Entity) {
-  zeroVector(obj.pos)
-  zeroVector(obj.vel)
+  zeroVector(obj.position)
+  zeroVector(obj.velocity)
   obj.health = 0
   obj.isActive = false
 }
@@ -211,7 +207,7 @@ export function zeroEntity(obj: Entity) {
 export const MAX_ENTITIES_COUNT = 2048
 
 /** An array of Entity objects (structures). */
-export const entities = new Array<Entity>(length)
+export const entities = new Array<Entity>(2048)
 for (let i=0; i<2048; i++) {
   entities[i] = createEntity()
 }
