@@ -1,19 +1,18 @@
 game group
-
-particle soa 1024
-posX array number
-posY array number
+activeEntities array number
 
 vector struct
 x number
 y number
 
 entity struct
-pos vector
-vel vector
-items array number
-flags array boolean 8
+position vector
+velocity vector
 health number
 isActive boolean
 
-entities aos entity 2048
+entities aos 2048 entity
+
+particle soa 1024
+posX array number
+posY array number

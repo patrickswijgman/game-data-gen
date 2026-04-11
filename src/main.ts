@@ -31,6 +31,7 @@ for (const block of blocks) {
   output.push(` * ${name} (${getTypeName(type)})`);
   output.push(` * ${"-".repeat(50)}`);
   output.push(" */");
+  output.push("");
 
   switch (type) {
     case Type.STRUCT:

@@ -34,7 +34,7 @@ npx game-data-gen <input-file-path> <optional-output-file-path>
 ## Format
 
 ```
-name type? length?
+name type? length? struct?
 fieldName fieldType fieldArrayType? fieldArrayLength?
 ```
 
@@ -46,9 +46,10 @@ The name of the data structure.
 
 Supported data structure types:
 
+- group
+- struct
 - soa (Structure of Arrays)
-
-If no type is given, it will act as a group which gets a zero function for the whole group.
+- aos (Array of Structures)
 
 `length` (optional)
 
@@ -64,6 +65,9 @@ The name of one of the fields within the data structure.
 
 Supported field types:
 
+- string
+- number
+- boolean
 - array
 
 `fieldArrayType` (optional, required if fieldType=array)
@@ -73,20 +77,16 @@ Supported array field types:
 - string
 - boolean
 - number
-- int8
-- int16
-- int32
-- uint8
-- uint16
-- uint32
-- float32
-- float64
 
 `fieldArrayLength` (optional)
 
-The length of the array field.
+The length of the array field, leave empty to use a dynamically sized array instead of a fixed size array.
 
 In case of a Structure of Arrays data structure (type=soa), setting the length on the type instead is recommended so that all arrays have the same length.
+
+`struct` (optional, required if type=aos)
+
+The defined struct to use for this Array of Structures.
 
 ## Example
 
@@ -95,13 +95,24 @@ Create a plain text file somewhere in your source code (without a file extension
 For example `src/data/game`:
 
 ```
-Game
+game group
 activeEntities array number
 
-Entity soa 2048
-posX array float32
-posY array float32
-isActive array uint8
+vector struct
+x number
+y number
+
+entity struct
+position vector
+velocity vector
+health number
+isActive boolean
+
+entities aos 2048 entity
+
+particle soa 1024
+posX array number
+posY array number
 ```
 
 Run the package with (consider making this a script in your package.json):
@@ -110,67 +121,139 @@ Run the package with (consider making this a script in your package.json):
 npx game-data-gen src/data/game
 ```
 
-This will create or update the `src/data/game.ts` file:
+This will create or update the `src/data/game.ts` file which you can then import into your code:
 
 ```typescript
 /*
+ * Generated with game-data-gen on 4/11/2026, 4:07:11 PM. DO NOT MODIFY THIS FILE!
+ */
+
+/*
  * --------------------------------------------------
- * Game (group)
+ * game (group)
  * --------------------------------------------------
  */
 
-export const activeEntities = new Array<number>();
+export const activeEntities = new Array<number>()
 
-/** Zero the activeEntities field within the Game group. */
+/** Zero the activeEntities field within the game group. */
 export function zeroActiveEntities() {
-  activeEntities.length = 0;
+  activeEntities.length = 0
 }
 
-/** Zero all fields within the Game group. */
+/** Zero all fields within the game group. */
 export function zeroGameData() {
-  activeEntities.length = 0;
+  activeEntities.length = 0
 }
 
 /*
  * --------------------------------------------------
- * Entity (Structure of Arrays)
+ * vector (struct)
  * --------------------------------------------------
  */
 
-export const MAX_ENTITY_COUNT = 2048;
-
-export const posX = new Float32Array(2048);
-export const posY = new Float32Array(2048);
-export const isActive = new Uint8Array(2048);
-
-/** Zero an index within the Entity Structure of Arrays. */
-export function zeroEntity(idx: number) {
-  posX[idx] = 0;
-  posY[idx] = 0;
-  isActive[idx] = 0;
+export type Vector = {
+  x: number
+  y: number
 }
 
-/** Zero the posX field within the Entity Structure of Arrays. */
+/** Create a new Vector object. */
+export function createVector(): Vector {
+  return {
+    x: 0,
+    y: 0,
+  }
+}
+
+/** Zero the given Vector object. */
+export function zeroVector(obj: Vector) {
+  obj.x = 0
+  obj.y = 0
+}
+
+/*
+ * --------------------------------------------------
+ * entity (struct)
+ * --------------------------------------------------
+ */
+
+export type Entity = {
+  pos: Vector
+  vel: Vector
+  health: number
+  isActive: boolean
+}
+
+/** Create a new Entity object. */
+export function createEntity(): Entity {
+  return {
+    pos: createVector(),
+    vel: createVector(),
+    health: 0,
+    isActive: false,
+  }
+}
+
+/** Zero the given Entity object. */
+export function zeroEntity(obj: Entity) {
+  zeroVector(obj.pos)
+  zeroVector(obj.vel)
+  obj.health = 0
+  obj.isActive = false
+}
+
+/*
+ * --------------------------------------------------
+ * entities (array of structures)
+ * --------------------------------------------------
+ */
+
+export const MAX_ENTITIES_COUNT = 2048
+
+
+/** An array of Entity objects (structures). */
+export const entities = new Array<Entity>(length)
+for (let i=0; i<2048; i++) {
+  entities[i] = createEntity()
+}
+
+/** Zero all objects within the entities array of structures. */
+export function zeroEntities() {
+  for (let i=0; i<2048; i++) {
+    zeroEntity(entities[i])
+  }
+}
+
+/*
+ * --------------------------------------------------
+ * particle (structure of arrays)
+ * --------------------------------------------------
+ */
+
+export const MAX_PARTICLE_COUNT = 1024
+
+export const posX = new Array<number>(1024).fill(0)
+export const posY = new Array<number>(1024).fill(0)
+
+/** Zero an index within the particle structure of arrays. */
+export function zeroParticle(idx: number) {
+  posX[idx] = 0
+  posY[idx] = 0
+}
+
+/** Zero the posX field within the particle structure of arrays. */
 export function zeroPosX() {
-  posX.fill(0);
+  posX.fill(0)
 }
 
-/** Zero the posY field within the Entity Structure of Arrays. */
+/** Zero the posY field within the particle structure of arrays. */
 export function zeroPosY() {
-  posY.fill(0);
+  posY.fill(0)
 }
 
-/** Zero the isActive field within the Entity Structure of Arrays. */
-export function zeroIsActive() {
-  isActive.fill(0);
-}
-
-/** Zero all fields within the Entity Structure of Arrays. */
-export function zeroEntityData() {
-  posX.fill(0);
-  posY.fill(0);
-  isActive.fill(0);
+/** Zero all fields within the particle structure of arrays. */
+export function zeroParticleData() {
+  posX.fill(0)
+  posY.fill(0)
 }
 ```
-
-Then import the data and its functions from `src/data/game.ts` in your code.

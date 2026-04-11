@@ -25,6 +25,7 @@ export function addStructureOfArrays(header: string, fields: Array<string>, outp
 }
 
 function addFieldZeroAtIndexFunction(name: string, type: string, fields: Array<string>, output: Array<string>) {
+  output.push("");
   output.push(`/** Zero an index within the ${name} ${getTypeName(type)}. */`);
   output.push(`export function zero${capitalize(name)}(idx: number) {`);
   for (const field of fields) {

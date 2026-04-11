@@ -39,6 +39,7 @@ export function addFieldSetFunction(name: string, type: string, field: string, o
     case FieldType.STRING:
     case FieldType.NUMBER:
     case FieldType.BOOLEAN:
+      output.push("");
       output.push(`/** Set the value of the ${fieldName} field within the ${name} ${getTypeName(type)}. */`);
       output.push(`export function set${capitalize(fieldName)}(value: ${fieldType}) {`);
       output.push(`  ${fieldName} = value`);
@@ -50,6 +51,7 @@ export function addFieldSetFunction(name: string, type: string, field: string, o
 export function addFieldZeroFunction(name: string, type: string, field: string, baseLength: string, output: Array<string>) {
   const [fieldName, fieldType, fieldArrayType, fieldLength] = field.split(" ");
   const length = baseLength || fieldLength || "";
+  output.push("");
   output.push(`/** Zero the ${fieldName} field within the ${name} ${getTypeName(type)}. */`);
   output.push(`export function zero${capitalize(fieldName)}() {`);
   zeroField(fieldName, fieldType, fieldArrayType, length, output);
@@ -57,6 +59,7 @@ export function addFieldZeroFunction(name: string, type: string, field: string, 
 }
 
 export function addZeroFunction(name: string, type: string, fields: Array<string>, baseLength: string, output: Array<string>) {
+  output.push("");
   output.push(`/** Zero all fields within the ${name} ${getTypeName(type)}. */`);
   output.push(`export function zero${capitalize(name)}Data() {`);
   for (const field of fields) {
@@ -98,4 +101,5 @@ function zeroField(name: string, type: string, arrayType: string, length: string
 
 export function addFieldMaxLengthConstant(name: string, length: string, output: Array<string>) {
   output.push(`export const MAX_${name.toUpperCase()}_COUNT = ${length}`);
+  output.push("");
 }
