@@ -9,7 +9,6 @@ export function addArrayOfStructures(header: string, output: Array<string>) {
 }
 
 function addArrayOfStructuresDefinition(name: string, struct: string, length: string, output: Array<string>) {
-  output.push("");
   output.push(`/** An array of ${capitalize(struct)} objects (structures). */`);
   output.push(`export const ${name} = new Array<${capitalize(struct)}>(length)`);
   output.push(`for (let i=0; i<${length}; i++) {`);

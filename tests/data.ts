@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 4/11/2026, 4:10:14 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/11/2026, 4:16:24 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -83,7 +83,6 @@ export function zeroEntity(obj: Entity) {
  */
 
 export const MAX_ENTITIES_COUNT = 2048
-
 
 /** An array of Entity objects (structures). */
 export const entities = new Array<Entity>(length)
