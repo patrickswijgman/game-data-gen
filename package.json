@@ -5,7 +5,9 @@
   "files": [
     "dist"
   ],
-  "bin": "dist/main.js",
+  "bin": {
+    "game-data-gen": "dist/main.js"
+  },
   "scripts": {
     "start": "onchange --initial 'src/**/*.ts' 'tests/*' -- tsx src/main.ts tests/data",
     "build": "tsc && esbuild src/main.ts --bundle --minify --platform=node --format=esm --target=es6 --outdir=dist --banner:js='#!/usr/bin/env node'",
@@ -13,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/patrickswijgman/game-data-gen"
+    "url": "git+https://github.com/patrickswijgman/game-data-gen.git"
   },
   "devDependencies": {
     "@types/node": "^24.12.2",
