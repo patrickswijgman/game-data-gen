@@ -1,8 +1,10 @@
 {
   "name": "game-data-gen",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "bin": "dist/main.js",
   "scripts": {
     "start": "onchange --initial 'src/**/*.ts' 'tests/*' -- tsx src/main.ts tests/data",
