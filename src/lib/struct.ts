@@ -14,13 +14,13 @@ function addStructTypeDefinition(name: string, fields: Array<string>, output: Ar
     const [fieldName, fieldType, fieldArrayType] = field.split(" ");
     switch (fieldType) {
       case FieldType.STRING:
-        output.push(`    ${fieldName}: string`);
+        output.push(`  ${fieldName}: string`);
         break;
       case FieldType.NUMBER:
-        output.push(`    ${fieldName}: number`);
+        output.push(`  ${fieldName}: number`);
         break;
       case FieldType.BOOLEAN:
-        output.push(`    ${fieldName}: boolean`);
+        output.push(`  ${fieldName}: boolean`);
         break;
       case FieldType.ARRAY:
         output.push(`  ${fieldName}: Array<${fieldArrayType}>`);
