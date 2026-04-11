@@ -1,5 +1,5 @@
 import { ArrayType } from "../consts.ts";
-import { addFieldDefinition, addFieldSetFunction, addFieldZeroFunction, addZeroFunction } from "./fields.ts";
+import { addFieldDefinition, addFieldMaxLengthConstant, addFieldSetFunction, addFieldZeroFunction, addZeroFunction } from "./fields.ts";
 import { capitalize, getTypeName } from "./utils.ts";
 
 export function addStructureOfArrays(header: string, fields: Array<string>, output: Array<string>) {
@@ -22,10 +22,6 @@ export function addStructureOfArrays(header: string, fields: Array<string>, outp
   }
 
   addZeroFunction(name, type, fields, baseLength, output);
-}
-
-function addFieldMaxLengthConstant(name: string, baseLength: string, output: Array<string>) {
-  output.push(`export const MAX_${name.toUpperCase()}_COUNT = ${baseLength}`);
 }
 
 function addFieldZeroAtIndexFunction(name: string, type: string, fields: Array<string>, output: Array<string>) {

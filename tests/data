@@ -1,6 +1,6 @@
 game group
 
-particle soa 2048
+particle soa 1024
 posX array number
 posY array number
 

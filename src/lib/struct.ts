@@ -33,6 +33,7 @@ function addStructTypeDefinition(name: string, fields: Array<string>, output: Ar
 }
 
 function addStructCreateFunction(name: string, fields: Array<string>, output: Array<string>) {
+  output.push(`/** Create a new ${capitalize(name)} object. */`);
   output.push(`export function create${capitalize(name)}(): ${capitalize(name)} {`);
   output.push(`  return {`);
   for (const field of fields) {
@@ -72,6 +73,7 @@ function addStructCreateFunction(name: string, fields: Array<string>, output: Ar
 }
 
 function addStructZeroFunction(name: string, fields: Array<string>, output: Array<string>) {
+  output.push(`/** Zero the given ${capitalize(name)} object. */`);
   output.push(`export function zero${capitalize(name)}(obj: ${capitalize(name)}) {`);
   for (const field of fields) {
     const [fieldName, fieldType, fieldArrayType, fieldArrayLength] = field.split(" ");

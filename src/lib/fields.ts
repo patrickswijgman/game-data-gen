@@ -95,3 +95,7 @@ function zeroField(name: string, type: string, arrayType: string, length: string
       break;
   }
 }
+
+export function addFieldMaxLengthConstant(name: string, length: string, output: Array<string>) {
+  output.push(`export const MAX_${name.toUpperCase()}_COUNT = ${length}`);
+}

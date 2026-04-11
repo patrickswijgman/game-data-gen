@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 4/11/2026, 3:43:23 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/11/2026, 3:51:12 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -16,9 +16,9 @@ export function zeroGameData() {
  * particle (structure of arrays)
  * --------------------------------------------------
  */
-export const MAX_PARTICLE_COUNT = 2048
-export const posX = new Array<number>(2048).fill(0)
-export const posY = new Array<number>(2048).fill(0)
+export const MAX_PARTICLE_COUNT = 1024
+export const posX = new Array<number>(1024).fill(0)
+export const posY = new Array<number>(1024).fill(0)
 /** Zero an index within the particle structure of arrays. */
 export function zeroParticle(idx: number) {
   posX[idx] = 0
@@ -47,12 +47,14 @@ export type Vector = {
   x: number
   y: number
 }
+/** Create a new Vector object. */
 export function createVector(): Vector {
   return {
     x: 0,
     y: 0,
   }
 }
+/** Zero the given Vector object. */
 export function zeroVector(obj: Vector) {
   obj.x = 0
   obj.y = 0
@@ -71,6 +73,7 @@ export type Entity = {
   health: number
   isActive: boolean
 }
+/** Create a new Entity object. */
 export function createEntity(): Entity {
   return {
     pos: createVector(),
@@ -81,6 +84,7 @@ export function createEntity(): Entity {
     isActive: false,
   }
 }
+/** Zero the given Entity object. */
 export function zeroEntity(obj: Entity) {
   zeroVector(obj.pos)
   zeroVector(obj.vel)
@@ -95,10 +99,13 @@ export function zeroEntity(obj: Entity) {
  * entities (array of structures)
  * --------------------------------------------------
  */
+export const MAX_ENTITIES_COUNT = 2048
+/** An array of Entity objects (structures). */
 export const entities = new Array<Entity>(length)
 for (let i=0; i<2048; i++) {
   entities[i] = createEntity()
 }
+/** Zero all objects within the entities array of structures. */
 export function zeroEntities() {
   for (let i=0; i<2048; i++) {
     zeroEntity(entities[i])
