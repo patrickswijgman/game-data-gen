@@ -13,11 +13,20 @@ function addStructTypeDefinition(name: string, fields: Array<string>, output: Ar
   for (const field of fields) {
     const [fieldName, fieldType, fieldArrayType] = field.split(" ");
     switch (fieldType) {
+      case FieldType.STRING:
+        output.push(`    ${fieldName}: string`);
+        break;
+      case FieldType.NUMBER:
+        output.push(`    ${fieldName}: number`);
+        break;
+      case FieldType.BOOLEAN:
+        output.push(`    ${fieldName}: boolean`);
+        break;
       case FieldType.ARRAY:
         output.push(`  ${fieldName}: Array<${fieldArrayType}>`);
         break;
       default:
-        output.push(`  ${fieldName}: ${fieldType}`);
+        output.push(`  ${fieldName}: ${capitalize(fieldType)}`);
     }
   }
   output.push("}");
@@ -54,7 +63,7 @@ function addStructCreateFunction(name: string, fields: Array<string>, output: Ar
         }
         break;
       default: {
-        output.push(`    ${fieldName}: create${fieldType}(),`);
+        output.push(`    ${fieldName}: create${capitalize(fieldType)}(),`);
       }
     }
   }

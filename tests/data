@@ -9,8 +9,8 @@ x number
 y number
 
 entity struct
-pos Vector
-vel Vector
+pos vector
+vel vector
 items array number
 flags array boolean 8
 health number

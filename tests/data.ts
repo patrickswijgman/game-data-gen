@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 4/11/2026, 3:38:10 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/11/2026, 3:41:54 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -44,8 +44,8 @@ export function zeroParticleData() {
  * --------------------------------------------------
  */
 export type Vector = {
-  x: number
-  y: number
+    x: number
+    y: number
 }
 export function createVector(): Vector {
   return {
@@ -68,8 +68,8 @@ export type Entity = {
   vel: Vector
   items: Array<number>
   flags: Array<boolean>
-  health: number
-  isActive: boolean
+    health: number
+    isActive: boolean
 }
 export function createEntity(): Entity {
   return {
