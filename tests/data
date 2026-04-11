@@ -16,4 +16,4 @@ flags array boolean 8
 health number
 isActive boolean
 
-entities aos Entity 2048
+entities aos entity 2048
