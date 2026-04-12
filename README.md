@@ -42,7 +42,7 @@ fieldName fieldType fieldArrayType? fieldArrayLength?
 
 The name of the data structure.
 
-`type` (optional)
+`type`
 
 Supported data structure types:
 
