@@ -27,6 +27,8 @@ export function addFieldDefinition(field: string, baseLength: string, output: Ar
           case ArrayType.BOOLEAN:
             output.push(`export let ${fieldName} = new Array<boolean>(${fieldArrayLength})${fieldArrayLength ? ".fill(false)" : ""}`);
             break;
+          default:
+            output.push(`export let ${fieldName} = new Array<${getName(fieldArrayType)}>()`);
         }
       }
       break;
@@ -92,6 +94,8 @@ function zeroField(name: string, type: string, arrayType: string, length: string
           case ArrayType.BOOLEAN:
             output.push(`  ${name}.${length ? "fill(false)" : "length = 0"}`);
             break;
+          default:
+            output.push(`  ${name}.length = 0`);
         }
       }
       break;

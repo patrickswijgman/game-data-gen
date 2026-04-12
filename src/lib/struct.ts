@@ -46,6 +46,8 @@ function addStructCreateFunction(name: string, fields: Array<string>, output: Ar
             case ArrayType.BOOLEAN:
               output.push(`  obj.${fieldName} = new Array<boolean>(${fieldArrayLength})${fieldArrayLength ? ".fill(false)" : ""}`);
               break;
+            default:
+              output.push(`  obj.${fieldName} = new Array<${getName(fieldArrayType)}>()`);
           }
         }
         break;
@@ -89,6 +91,8 @@ function addStructZeroFunction(name: string, fields: Array<string>, output: Arra
             case ArrayType.BOOLEAN:
               output.push(`  obj.${fieldName}.${fieldArrayLength ? "fill(false)" : "length = 0"}`);
               break;
+            default:
+              output.push(`  obj.${fieldName}.length = 0`);
           }
         }
         break;

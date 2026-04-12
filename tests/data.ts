@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 4/12/2026, 1:58:26 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/12/2026, 2:55:55 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -9,7 +9,7 @@
  */
 
 export let activeEntities = new Set<number>()
-export let destroyedEntities = new Set<number>()
+export let destroyedEntities = new Array<Entity>()
 export let player = createEntity()
 
 /** Set the value of the activeEntities field within the game group. */
@@ -18,7 +18,7 @@ export function setActiveEntities(value: Set<number>) {
 }
 
 /** Set the value of the destroyedEntities field within the game group. */
-export function setDestroyedEntities(value: Set<number>) {
+export function setDestroyedEntities(value: Array<Entity>) {
   destroyedEntities = value
 }
 
@@ -34,7 +34,7 @@ export function zeroActiveEntities() {
 
 /** Zero the destroyedEntities field within the game group. */
 export function zeroDestroyedEntities() {
-  destroyedEntities.clear()
+  destroyedEntities.length = 0
 }
 
 /** Zero the player field within the game group. */
@@ -45,7 +45,7 @@ export function zeroPlayer() {
 /** Zero all fields within the game group. */
 export function zeroGameData() {
   activeEntities.clear()
-  destroyedEntities.clear()
+  destroyedEntities.length = 0
   zeroEntity(player)
 }
 

@@ -1,6 +1,6 @@
 game group
 activeEntities set number
-destroyedEntities set number
+destroyedEntities array entity
 player entity
 
 vector struct
