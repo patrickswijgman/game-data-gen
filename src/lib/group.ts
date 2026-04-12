@@ -1,4 +1,4 @@
-import { addFieldDefinition, addFieldSetFunction, addFieldZeroFunction, addZeroFunction } from "./fields.ts";
+import { addFieldDefinition, addFieldSetFunction, addFieldZeroFunction, addZeroFunction } from "./fields.js";
 
 export function addGroup(header: string, fields: Array<string>, output: Array<string>) {
   const [name, type, baseLength] = header.split(" ");

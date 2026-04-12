@@ -1,5 +1,5 @@
-import { ArrayType, FieldType } from "../consts.ts";
-import { capitalize } from "./utils.ts";
+import { ArrayType, FieldType } from "../consts.js";
+import { capitalize, getName } from "./utils.js";
 
 export function addStruct(header: string, fields: Array<string>, output: Array<string>) {
   const [name] = header.split(" ");
@@ -12,22 +12,7 @@ function addStructTypeDefinition(name: string, fields: Array<string>, output: Ar
   output.push(`export type ${capitalize(name)} = {`);
   for (const field of fields) {
     const [fieldName, fieldType, fieldArrayType] = field.split(" ");
-    switch (fieldType) {
-      case FieldType.STRING:
-        output.push(`  ${fieldName}: string`);
-        break;
-      case FieldType.NUMBER:
-        output.push(`  ${fieldName}: number`);
-        break;
-      case FieldType.BOOLEAN:
-        output.push(`  ${fieldName}: boolean`);
-        break;
-      case FieldType.ARRAY:
-        output.push(`  ${fieldName}: Array<${fieldArrayType}>`);
-        break;
-      default:
-        output.push(`  ${fieldName}: ${capitalize(fieldType)}`);
-    }
+    output.push(`  ${fieldName}: ${getName(fieldType, fieldArrayType)}`);
   }
   output.push("}");
 }

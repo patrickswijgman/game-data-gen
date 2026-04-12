@@ -1,6 +1,6 @@
-import { ArrayType } from "../consts.ts";
-import { addFieldDefinition, addFieldMaxLengthConstant, addFieldSetFunction, addFieldZeroFunction, addZeroFunction } from "./fields.ts";
-import { capitalize, getTypeName } from "./utils.ts";
+import { ArrayType } from "../consts.js";
+import { addFieldDefinition, addFieldMaxLengthConstant, addFieldSetFunction, addFieldZeroFunction, addZeroFunction } from "./fields.js";
+import { capitalize, getName } from "./utils.js";
 
 export function addStructureOfArrays(header: string, fields: Array<string>, output: Array<string>) {
   const [name, type, baseLength] = header.split(" ");
@@ -26,7 +26,7 @@ export function addStructureOfArrays(header: string, fields: Array<string>, outp
 
 function addFieldZeroAtIndexFunction(name: string, type: string, fields: Array<string>, output: Array<string>) {
   output.push("");
-  output.push(`/** Zero an index within the ${name} ${getTypeName(type)}. */`);
+  output.push(`/** Zero an index within the ${name} ${getName(type)}. */`);
   output.push(`export function zero${capitalize(name)}(idx: number) {`);
   for (const field of fields) {
     const [fieldName, _, fieldArrayType] = field.split(" ");

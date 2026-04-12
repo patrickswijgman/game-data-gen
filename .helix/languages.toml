@@ -1,13 +1,18 @@
-[language-server.typescript-language-server.config]
-preferences.importModuleSpecifierPreference = "non-relative"
-preferences.importModuleSpecifierEnding = "js"
+[language-server.biome]
+command = "npx"
+args = ["biome", "lsp-proxy"]
 
 [[language]]
 name = "typescript"
-formatter = { command = "prettierd", args = [".ts"] }
+language-servers = [{ name = "typescript-language-server", except-features = ["format"] }, "biome"]
 auto-format = true
 
 [[language]]
 name = "json"
-formatter = { command = "prettierd", args = [".json"] }
+language-servers = [{ name = "vscode-json-language-server", except-features = ["format"] }, "biome"]
+auto-format = true
+
+[[language]]
+name = "jsonc"
+language-servers = [{ name = "vscode-json-language-server", except-features = ["format"] }, "biome"]
 auto-format = true

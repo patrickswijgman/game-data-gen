@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 4/11/2026, 4:32:53 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/12/2026, 1:27:13 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -8,16 +8,33 @@
  * --------------------------------------------------
  */
 
-export const activeEntities = new Array<number>()
+export let activeEntities = new Array<number>()
+export let player = createEntity()
+
+/** Set the value of the activeEntities field within the game group. */
+export function setActiveEntities(value: Array<number>) {
+  activeEntities = value
+}
+
+/** Set the value of the player field within the game group. */
+export function setPlayer(value: Entity) {
+  player = value
+}
 
 /** Zero the activeEntities field within the game group. */
 export function zeroActiveEntities() {
   activeEntities.length = 0
 }
 
+/** Zero the player field within the game group. */
+export function zeroPlayer() {
+  zeroEntity(player)
+}
+
 /** Zero all fields within the game group. */
 export function zeroGameData() {
   activeEntities.length = 0
+  zeroEntity(player)
 }
 
 /*
@@ -55,6 +72,7 @@ export type Entity = {
   position: Vector
   velocity: Vector
   health: number
+  items: Array<number>
   isActive: boolean
 }
 
@@ -64,6 +82,7 @@ export function createEntity(): Entity {
   obj.position = createVector()
   obj.velocity = createVector()
   obj.health = 0
+  obj.items = new Array<number>(64).fill(0)
   obj.isActive = false
   return obj
 }
@@ -73,6 +92,7 @@ export function zeroEntity(obj: Entity) {
   zeroVector(obj.position)
   zeroVector(obj.velocity)
   obj.health = 0
+  obj.items.fill(0)
   obj.isActive = false
 }
 
@@ -97,6 +117,11 @@ export function zeroEntities() {
   }
 }
 
+/** Zero an object at a specific index within the entities array of structures. */
+export function zeroEntityAt(index: number) {
+  zeroEntity(entities[index])
+}
+
 /*
  * --------------------------------------------------
  * particle (structure of arrays)
@@ -105,8 +130,18 @@ export function zeroEntities() {
 
 export const MAX_PARTICLE_COUNT = 1024
 
-export const posX = new Array<number>(1024).fill(0)
-export const posY = new Array<number>(1024).fill(0)
+export let posX = new Array<number>(1024).fill(0)
+export let posY = new Array<number>(1024).fill(0)
+
+/** Set the value of the posX field within the particle structure of arrays. */
+export function setPosX(value: Array<number>) {
+  posX = value
+}
+
+/** Set the value of the posY field within the particle structure of arrays. */
+export function setPosY(value: Array<number>) {
+  posY = value
+}
 
 /** Zero an index within the particle structure of arrays. */
 export function zeroParticle(idx: number) {

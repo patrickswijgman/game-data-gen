@@ -1,9 +1,9 @@
-import { Type } from "../consts.ts";
+import { FieldType, Type } from "../consts.js";
 
 /**
  * Get the name based on the type of the data structure.
  */
-export function getTypeName(type: string) {
+export function getName(type: string, arrayType: string = ""): string {
   switch (type) {
     case Type.SOA:
       return "structure of arrays";
@@ -13,8 +13,16 @@ export function getTypeName(type: string) {
       return "struct";
     case Type.GROUP:
       return "group";
+    case FieldType.STRING:
+      return "string";
+    case FieldType.NUMBER:
+      return "number";
+    case FieldType.BOOLEAN:
+      return "boolean";
+    case FieldType.ARRAY:
+      return `Array<${getName(arrayType)}>`;
     default:
-      return "???";
+      return capitalize(type);
   }
 }
 

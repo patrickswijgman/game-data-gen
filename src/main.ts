@@ -1,10 +1,12 @@
-import fs from "fs";
-import { Type } from "./consts.ts";
-import { getTypeName } from "./lib/utils.ts";
-import { addStructureOfArrays } from "./lib/soa.ts";
-import { addGroup } from "./lib/group.ts";
-import { addStruct } from "./lib/struct.ts";
-import { addArrayOfStructures } from "./lib/aos.ts";
+#!/usr/bin/env node
+
+import fs from "node:fs";
+import { Type } from "./consts.js";
+import { addArrayOfStructures } from "./lib/aos.js";
+import { addGroup } from "./lib/group.js";
+import { addStructureOfArrays } from "./lib/soa.js";
+import { addStruct } from "./lib/struct.js";
+import { getName } from "./lib/utils.js";
 
 const inputFile = process.argv[2];
 const outputFile = process.argv[3] || `${inputFile}.ts`;
@@ -28,7 +30,7 @@ for (const block of blocks) {
   output.push("");
   output.push("/*");
   output.push(` * ${"-".repeat(50)}`);
-  output.push(` * ${name} (${getTypeName(type)})`);
+  output.push(` * ${name} (${getName(type)})`);
   output.push(` * ${"-".repeat(50)}`);
   output.push(" */");
   output.push("");

@@ -9,19 +9,16 @@
     "game-data-gen": "dist/main.js"
   },
   "scripts": {
-    "start": "onchange --initial 'src/**/*.ts' 'tests/*' -- tsx src/main.ts tests/data",
-    "build": "tsc && esbuild src/main.ts --bundle --minify --platform=node --format=esm --target=es6 --outdir=dist --banner:js='#!/usr/bin/env node'",
-    "test": "npm run build && npx game-data-gen tests/data"
+    "start": "tsc && node dist/main.js tests/data",
+    "build": "biome check && tsc"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/patrickswijgman/game-data-gen.git"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.11",
     "@types/node": "^24.12.2",
-    "esbuild": "^0.28.0",
-    "onchange": "^7.1.0",
-    "tsx": "^4.21.0",
     "typescript": "^6.0.2"
   }
 }

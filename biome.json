@@ -1,0 +1,24 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.11/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "defaultBranch": "main",
+    "useIgnoreFile": true
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "lineWidth": 320,
+    "includes": ["**", "!**/tests/**/*"]
+  },
+  "linter": {
+    "rules": {
+      "style": {
+        "useArrayLiterals": "off"
+      },
+      "suspicious": {
+        "noConstEnum": "off"
+      }
+    }
+  }
+}

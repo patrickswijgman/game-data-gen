@@ -57,6 +57,10 @@ The length of the arrays within the Structure of Arrays data structure.
 
 If no length is given to the type and no length is given to a field it is considered a dynamic array and zeroing will set the array's length back to zero (emptying it).
 
+`struct` (optional, required if type=aos)
+
+The struct to use for this Array of Structures.
+
 `fieldName`
 
 The name of one of the fields within the data structure.
@@ -69,8 +73,9 @@ Supported field types:
 - number
 - boolean
 - array
+- a struct (see entity struct in example below)
 
-`fieldArrayType` (optional, required if fieldType=array)
+`fieldArrayType` (required if fieldType=array)
 
 Supported array field types:
 
@@ -84,9 +89,6 @@ The length of the array field, leave empty to use a dynamically sized array inst
 
 In case of a Structure of Arrays data structure (type=soa), setting the length on the type instead is recommended so that all arrays have the same length.
 
-`struct` (optional, required if type=aos)
-
-The defined struct to use for this Array of Structures.
 
 ## Example
 
@@ -121,7 +123,7 @@ Run the package with (consider making this a script in your package.json):
 npx game-data-gen src/data/game
 ```
 
-This will create or update the `src/data/game.ts` file which you can then import into your code:
+This will create or update the `src/data/game.ts` file (see below). The data and functions can then be imported from this file into your code.
 
 ```typescript
 /*
