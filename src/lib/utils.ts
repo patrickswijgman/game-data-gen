@@ -21,6 +21,8 @@ export function getName(type: string, arrayType: string = ""): string {
       return "boolean";
     case FieldType.ARRAY:
       return `Array<${getName(arrayType)}>`;
+    case FieldType.SET:
+      return `Set<${getName(arrayType)}>`;
     default:
       return capitalize(type);
   }

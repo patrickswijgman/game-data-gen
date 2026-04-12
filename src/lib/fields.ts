@@ -30,6 +30,9 @@ export function addFieldDefinition(field: string, baseLength: string, output: Ar
         }
       }
       break;
+    case FieldType.SET:
+      output.push(`export let ${fieldName} = new Set<${getName(fieldArrayType)}>()`);
+      break;
     default:
       output.push(`export let ${fieldName} = create${capitalize(fieldType)}()`);
   }
@@ -91,6 +94,9 @@ function zeroField(name: string, type: string, arrayType: string, length: string
             break;
         }
       }
+      break;
+    case FieldType.SET:
+      output.push(`  ${name}.clear()`);
       break;
     default:
       output.push(`  zero${capitalize(type)}(${name})`);

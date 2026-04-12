@@ -10,6 +10,7 @@ export const enum FieldType {
   NUMBER = "number",
   BOOLEAN = "boolean",
   ARRAY = "array",
+  SET = "set",
 }
 
 export const enum ArrayType {

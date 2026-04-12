@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 4/12/2026, 1:27:13 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/12/2026, 1:58:26 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -8,12 +8,18 @@
  * --------------------------------------------------
  */
 
-export let activeEntities = new Array<number>()
+export let activeEntities = new Set<number>()
+export let destroyedEntities = new Set<number>()
 export let player = createEntity()
 
 /** Set the value of the activeEntities field within the game group. */
-export function setActiveEntities(value: Array<number>) {
+export function setActiveEntities(value: Set<number>) {
   activeEntities = value
+}
+
+/** Set the value of the destroyedEntities field within the game group. */
+export function setDestroyedEntities(value: Set<number>) {
+  destroyedEntities = value
 }
 
 /** Set the value of the player field within the game group. */
@@ -23,7 +29,12 @@ export function setPlayer(value: Entity) {
 
 /** Zero the activeEntities field within the game group. */
 export function zeroActiveEntities() {
-  activeEntities.length = 0
+  activeEntities.clear()
+}
+
+/** Zero the destroyedEntities field within the game group. */
+export function zeroDestroyedEntities() {
+  destroyedEntities.clear()
 }
 
 /** Zero the player field within the game group. */
@@ -33,7 +44,8 @@ export function zeroPlayer() {
 
 /** Zero all fields within the game group. */
 export function zeroGameData() {
-  activeEntities.length = 0
+  activeEntities.clear()
+  destroyedEntities.clear()
   zeroEntity(player)
 }
 
@@ -72,7 +84,7 @@ export type Entity = {
   position: Vector
   velocity: Vector
   health: number
-  items: Array<number>
+  items: Set<number>
   isActive: boolean
 }
 
@@ -82,7 +94,7 @@ export function createEntity(): Entity {
   obj.position = createVector()
   obj.velocity = createVector()
   obj.health = 0
-  obj.items = new Array<number>(64).fill(0)
+  obj.items = new Set<number>()
   obj.isActive = false
   return obj
 }
@@ -92,7 +104,7 @@ export function zeroEntity(obj: Entity) {
   zeroVector(obj.position)
   zeroVector(obj.velocity)
   obj.health = 0
-  obj.items.fill(0)
+  obj.items.clear()
   obj.isActive = false
 }
 

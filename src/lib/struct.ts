@@ -49,6 +49,9 @@ function addStructCreateFunction(name: string, fields: Array<string>, output: Ar
           }
         }
         break;
+      case FieldType.SET:
+        output.push(`  obj.${fieldName} = new Set<${getName(fieldArrayType)}>()`);
+        break;
       default: {
         output.push(`  obj.${fieldName} = create${capitalize(fieldType)}()`);
       }
@@ -88,6 +91,9 @@ function addStructZeroFunction(name: string, fields: Array<string>, output: Arra
               break;
           }
         }
+        break;
+      case FieldType.SET:
+        output.push(`  obj.${fieldName}.clear()`);
         break;
       default:
         output.push(`  zero${capitalize(fieldType)}(obj.${fieldName})`);
