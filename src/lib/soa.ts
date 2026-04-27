@@ -2,14 +2,14 @@ import { ArrayType } from "../consts.js";
 import { addHeader, capitalize, getTypeName } from "./utils.js";
 
 export function addStructureOfArrays(header: string, fields: Array<string>, output: Array<string>) {
-  const [name, _, baseLength] = header.split(" ");
+  const [name, _, length] = header.split(" ");
 
   addHeader(`${name} (Structure Of Arrays)`, output);
 
-  addFieldMaxLengthConstant(name, baseLength, output);
+  addFieldMaxLengthConstant(name, length, output);
 
   for (const field of fields) {
-    addFieldDefinition(field, baseLength, output);
+    addFieldDefinition(field, length, output);
   }
 
   addFieldZeroAtIndexFunction(name, fields, output);
