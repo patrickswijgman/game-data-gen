@@ -31,65 +31,6 @@ npm i -D game-data-gen
 npx game-data-gen <input-file-path> <optional-output-file-path>
 ```
 
-## Format
-
-```
-name type? length? struct?
-fieldName fieldType fieldArrayType? fieldArrayLength?
-```
-
-`name`
-
-The name of the data structure.
-
-`type`
-
-Supported data structure types:
-
-- group
-- struct
-- soa (Structure of Arrays)
-- aos (Array of Structures)
-
-`length` (optional)
-
-The length of the arrays within the Structure of Arrays data structure.
-
-If no length is given to the type and no length is given to a field it is considered a dynamic array and zeroing will set the array's length back to zero (emptying it).
-
-`struct` (optional, required if type=aos)
-
-The struct to use for this Array of Structures.
-
-`fieldName`
-
-The name of one of the fields within the data structure.
-
-`fieldType`
-
-Supported field types:
-
-- string
-- number
-- boolean
-- array
-- a struct (see entity struct in example below)
-
-`fieldArrayType` (required if fieldType=array)
-
-Supported array field types:
-
-- string
-- boolean
-- number
-
-`fieldArrayLength` (optional)
-
-The length of the array field, leave empty to use a dynamically sized array instead of a fixed size array.
-
-In case of a Structure of Arrays data structure (type=soa), setting the length on the type instead is recommended so that all arrays have the same length.
-
-
 ## Example
 
 Create a plain text file somewhere in your source code (without a file extension).
@@ -113,8 +54,8 @@ isActive boolean
 entities aos 2048 entity
 
 particle soa 1024
-posX array number
-posY array number
+posX number
+posY number
 ```
 
 Run the package with (consider making this a script in your package.json):

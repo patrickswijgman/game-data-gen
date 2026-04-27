@@ -1,10 +1,12 @@
 import { ArrayType, FieldType } from "../consts.js";
-import { capitalize, getName } from "./utils.js";
+import { addHeader, capitalize, getTypeName } from "./utils.js";
 
 export function addStruct(header: string, fields: Array<string>, output: Array<string>) {
   const [name] = header.split(" ");
+  addHeader(`${name} (Struct)`, output);
   addStructTypeDefinition(name, fields, output);
   addStructCreateFunction(name, fields, output);
+  addStructCopyFunction(name, fields, output);
   addStructZeroFunction(name, fields, output);
 }
 
@@ -12,7 +14,7 @@ function addStructTypeDefinition(name: string, fields: Array<string>, output: Ar
   output.push(`export type ${capitalize(name)} = {`);
   for (const field of fields) {
     const [fieldName, fieldType, fieldArrayType] = field.split(" ");
-    output.push(`  ${fieldName}: ${getName(fieldType, fieldArrayType)}`);
+    output.push(`  ${fieldName}: ${getTypeName(fieldType, fieldArrayType)}`);
   }
   output.push("}");
 }
@@ -20,8 +22,8 @@ function addStructTypeDefinition(name: string, fields: Array<string>, output: Ar
 function addStructCreateFunction(name: string, fields: Array<string>, output: Array<string>) {
   output.push("");
   output.push(`/** Create a new ${capitalize(name)} object. */`);
-  output.push(`export function create${capitalize(name)}(): ${capitalize(name)} {`);
-  output.push(`  const obj = Object.create(null)`);
+  output.push(`export function create${capitalize(name)}() {`);
+  output.push(`  const obj = Object.create(null) as ${capitalize(name)}`);
   for (const field of fields) {
     const [fieldName, fieldType, fieldArrayType, fieldArrayLength = ""] = field.split(" ");
     switch (fieldType) {
@@ -47,12 +49,9 @@ function addStructCreateFunction(name: string, fields: Array<string>, output: Ar
               output.push(`  obj.${fieldName} = new Array<boolean>(${fieldArrayLength})${fieldArrayLength ? ".fill(false)" : ""}`);
               break;
             default:
-              output.push(`  obj.${fieldName} = new Array<${getName(fieldArrayType)}>()`);
+              output.push(`  obj.${fieldName} = new Array<${getTypeName(fieldArrayType)}>()`);
           }
         }
-        break;
-      case FieldType.SET:
-        output.push(`  obj.${fieldName} = new Set<${getName(fieldArrayType)}>()`);
         break;
       default: {
         output.push(`  obj.${fieldName} = create${capitalize(fieldType)}()`);
@@ -60,6 +59,41 @@ function addStructCreateFunction(name: string, fields: Array<string>, output: Ar
     }
   }
   output.push("  return obj");
+  output.push("}");
+}
+
+function addStructCopyFunction(name: string, fields: Array<string>, output: Array<string>) {
+  output.push("");
+  output.push(`/** Copy the values of ${capitalize(name)} object b into ${capitalize(name)} object a. */`);
+  output.push(`export function copy${capitalize(name)}(a: ${capitalize(name)}, b: ${capitalize(name)}) {`);
+  for (const field of fields) {
+    const [fieldName, fieldType, fieldArrayType] = field.split(" ");
+    switch (fieldType) {
+      case FieldType.STRING:
+      case FieldType.NUMBER:
+      case FieldType.BOOLEAN:
+        output.push(`  a.${fieldName} = b.${fieldName}`);
+        break;
+      case FieldType.ARRAY:
+        {
+          output.push(`  for (let i = 0; i < b.${fieldName}.length; i++) {`);
+          switch (fieldArrayType) {
+            case ArrayType.STRING:
+            case ArrayType.NUMBER:
+            case ArrayType.BOOLEAN:
+              output.push(`    a.${fieldName}[i] = b.${fieldName}[i]`);
+              break;
+            default:
+              output.push(`    copy${capitalize(fieldArrayType)}(a.${fieldName}[i], b.${fieldName}[i])`);
+          }
+          output.push(`  }`);
+        }
+        break;
+      default: {
+        output.push(`  a.${fieldName} = b.${fieldName}`);
+      }
+    }
+  }
   output.push("}");
 }
 
@@ -95,9 +129,6 @@ function addStructZeroFunction(name: string, fields: Array<string>, output: Arra
               output.push(`  obj.${fieldName}.length = 0`);
           }
         }
-        break;
-      case FieldType.SET:
-        output.push(`  obj.${fieldName}.clear()`);
         break;
       default:
         output.push(`  zero${capitalize(fieldType)}(obj.${fieldName})`);

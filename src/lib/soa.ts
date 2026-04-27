@@ -1,9 +1,10 @@
 import { ArrayType } from "../consts.js";
-import { addFieldDefinition, addFieldMaxLengthConstant, addFieldSetFunction, addFieldZeroFunction, addZeroFunction } from "./fields.js";
-import { capitalize, getName } from "./utils.js";
+import { addHeader, capitalize, getTypeName } from "./utils.js";
 
 export function addStructureOfArrays(header: string, fields: Array<string>, output: Array<string>) {
-  const [name, type, baseLength] = header.split(" ");
+  const [name, _, baseLength] = header.split(" ");
+
+  addHeader(`${name} (Structure Of Arrays)`, output);
 
   addFieldMaxLengthConstant(name, baseLength, output);
 
@@ -11,26 +12,80 @@ export function addStructureOfArrays(header: string, fields: Array<string>, outp
     addFieldDefinition(field, baseLength, output);
   }
 
-  for (const field of fields) {
-    addFieldSetFunction(name, type, field, output);
-  }
-
-  addFieldZeroAtIndexFunction(name, type, fields, output);
+  addFieldZeroAtIndexFunction(name, fields, output);
 
   for (const field of fields) {
-    addFieldZeroFunction(name, type, field, baseLength, output);
+    addFieldZeroFunction(name, field, output);
   }
 
-  addZeroFunction(name, type, fields, baseLength, output);
+  addZeroFunction(name, fields, output);
 }
 
-function addFieldZeroAtIndexFunction(name: string, type: string, fields: Array<string>, output: Array<string>) {
+function addFieldMaxLengthConstant(name: string, length: string, output: Array<string>) {
+  output.push(`export const MAX_${name.toUpperCase()}_COUNT = ${length}`);
   output.push("");
-  output.push(`/** Zero an index within the ${name} ${getName(type)}. */`);
+}
+
+function addFieldDefinition(field: string, length: string, output: Array<string>) {
+  const [fieldName, fieldType] = field.split(" ");
+  switch (fieldType) {
+    case ArrayType.STRING:
+      output.push(`export const ${fieldName} = new Array<string>(${length}).fill("")`);
+      break;
+    case ArrayType.NUMBER:
+      output.push(`export const ${fieldName} = new Array<number>(${length}).fill(0)`);
+      break;
+    case ArrayType.BOOLEAN:
+      output.push(`export const ${fieldName} = new Array<boolean>(${length}).fill(false)`);
+      break;
+    default:
+      output.push(`export const ${fieldName} = new Array<${getTypeName(fieldType)}>(${length}).fill(null).map(() => create${capitalize(fieldType)})()`);
+  }
+}
+
+function addFieldZeroFunction(name: string, field: string, output: Array<string>) {
+  const [fieldName, fieldType] = field.split(" ");
+  output.push("");
+  output.push(`/** Zero the ${fieldName} field within the ${name} structure of arrays. */`);
+  output.push(`export function zero${capitalize(fieldName)}() {`);
+  zeroField(fieldName, fieldType, output);
+  output.push("}");
+}
+
+function addZeroFunction(name: string, fields: Array<string>, output: Array<string>) {
+  output.push("");
+  output.push(`/** Zero all fields within the ${name} structure of arrays. */`);
+  output.push(`export function zero${capitalize(name)}Data() {`);
+  for (const field of fields) {
+    const [fieldName, fieldType] = field.split(" ");
+    zeroField(fieldName, fieldType, output);
+  }
+  output.push("}");
+}
+
+function zeroField(name: string, type: string, output: Array<string>) {
+  switch (type) {
+    case ArrayType.STRING:
+      output.push(`  ${name}.fill("")`);
+      break;
+    case ArrayType.NUMBER:
+      output.push(`  ${name}.fill(0)`);
+      break;
+    case ArrayType.BOOLEAN:
+      output.push(`  ${name}.fill(false)`);
+      break;
+    default:
+      output.push(`  ${name}.forEach(zero${capitalize(type)})`);
+  }
+}
+
+function addFieldZeroAtIndexFunction(name: string, fields: Array<string>, output: Array<string>) {
+  output.push("");
+  output.push(`/** Zero an index within the ${name} structure of arrays. */`);
   output.push(`export function zero${capitalize(name)}(idx: number) {`);
   for (const field of fields) {
-    const [fieldName, _, fieldArrayType] = field.split(" ");
-    switch (fieldArrayType) {
+    const [fieldName, fieldType] = field.split(" ");
+    switch (fieldType) {
       case ArrayType.STRING:
         output.push(`  ${fieldName}[idx] = ""`);
         break;
@@ -40,6 +95,8 @@ function addFieldZeroAtIndexFunction(name: string, type: string, fields: Array<s
       case ArrayType.BOOLEAN:
         output.push(`  ${fieldName}[idx] = false`);
         break;
+      default:
+        output.push(`  zero${capitalize(fieldType)}(${fieldName}[idx])`);
     }
   }
   output.push("}");

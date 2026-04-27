@@ -1,9 +1,19 @@
 import { FieldType, Type } from "../consts.js";
 
+export function addHeader(name: string, output: Array<string>) {
+  output.push("");
+  output.push("/*");
+  output.push(` * ${"-".repeat(50)}`);
+  output.push(` * ${name}`);
+  output.push(` * ${"-".repeat(50)}`);
+  output.push(" */");
+  output.push("");
+}
+
 /**
  * Get the name based on the type of the data structure.
  */
-export function getName(type: string, arrayType: string = ""): string {
+export function getTypeName(type: string, arrayType: string = ""): string {
   switch (type) {
     case Type.SOA:
       return "structure of arrays";
@@ -20,9 +30,7 @@ export function getName(type: string, arrayType: string = ""): string {
     case FieldType.BOOLEAN:
       return "boolean";
     case FieldType.ARRAY:
-      return `Array<${getName(arrayType)}>`;
-    case FieldType.SET:
-      return `Set<${getName(arrayType)}>`;
+      return `Array<${getTypeName(arrayType)}>`;
     default:
       return capitalize(type);
   }

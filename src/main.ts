@@ -6,7 +6,6 @@ import { addArrayOfStructures } from "./lib/aos.js";
 import { addGroup } from "./lib/group.js";
 import { addStructureOfArrays } from "./lib/soa.js";
 import { addStruct } from "./lib/struct.js";
-import { getName } from "./lib/utils.js";
 
 const inputFile = process.argv[2];
 const outputFile = process.argv[3] || `${inputFile}.ts`;
@@ -25,15 +24,7 @@ for (const block of blocks) {
 
   if (!header) continue;
 
-  const [name, type] = header.split(" ");
-
-  output.push("");
-  output.push("/*");
-  output.push(` * ${"-".repeat(50)}`);
-  output.push(` * ${name} (${getName(type)})`);
-  output.push(` * ${"-".repeat(50)}`);
-  output.push(" */");
-  output.push("");
+  const [_, type] = header.split(" ");
 
   switch (type) {
     case Type.STRUCT:
