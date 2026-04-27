@@ -1,19 +1,19 @@
 /*
- * Generated with game-data-gen on 4/12/2026, 2:55:55 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/27/2026, 11:09:13 AM. DO NOT MODIFY THIS FILE!
  */
 
 /*
  * --------------------------------------------------
- * game (group)
+ * game (Group)
  * --------------------------------------------------
  */
 
-export let activeEntities = new Set<number>()
+export let activeEntities = new Array<number>()
 export let destroyedEntities = new Array<Entity>()
 export let player = createEntity()
 
 /** Set the value of the activeEntities field within the game group. */
-export function setActiveEntities(value: Set<number>) {
+export function setActiveEntities(value: Array<number>) {
   activeEntities = value
 }
 
@@ -29,7 +29,7 @@ export function setPlayer(value: Entity) {
 
 /** Zero the activeEntities field within the game group. */
 export function zeroActiveEntities() {
-  activeEntities.clear()
+  activeEntities.length = 0
 }
 
 /** Zero the destroyedEntities field within the game group. */
@@ -44,14 +44,14 @@ export function zeroPlayer() {
 
 /** Zero all fields within the game group. */
 export function zeroGameData() {
-  activeEntities.clear()
+  activeEntities.length = 0
   destroyedEntities.length = 0
   zeroEntity(player)
 }
 
 /*
  * --------------------------------------------------
- * vector (struct)
+ * vector (Struct)
  * --------------------------------------------------
  */
 
@@ -61,11 +61,17 @@ export type Vector = {
 }
 
 /** Create a new Vector object. */
-export function createVector(): Vector {
-  const obj = Object.create(null)
+export function createVector() {
+  const obj: Vector = Object.create(null)
   obj.x = 0
   obj.y = 0
   return obj
+}
+
+/** Copy the values of Vector object b into Vector object a. */
+export function copyVector(a: Vector, b: Vector) {
+  a.x = b.x
+  a.y = b.y
 }
 
 /** Zero the given Vector object. */
@@ -76,7 +82,7 @@ export function zeroVector(obj: Vector) {
 
 /*
  * --------------------------------------------------
- * entity (struct)
+ * entity (Struct)
  * --------------------------------------------------
  */
 
@@ -84,19 +90,30 @@ export type Entity = {
   position: Vector
   velocity: Vector
   health: number
-  items: Set<number>
+  items: Array<number>
   isActive: boolean
 }
 
 /** Create a new Entity object. */
-export function createEntity(): Entity {
-  const obj = Object.create(null)
+export function createEntity() {
+  const obj: Entity = Object.create(null)
   obj.position = createVector()
   obj.velocity = createVector()
   obj.health = 0
-  obj.items = new Set<number>()
+  obj.items = new Array<number>()
   obj.isActive = false
   return obj
+}
+
+/** Copy the values of Entity object b into Entity object a. */
+export function copyEntity(a: Entity, b: Entity) {
+  a.position = b.position
+  a.velocity = b.velocity
+  a.health = b.health
+  for (let i = 0; i < b.items.length; i++) {
+    a.items[i] = b.items[i]
+  }
+  a.isActive = b.isActive
 }
 
 /** Zero the given Entity object. */
@@ -104,17 +121,17 @@ export function zeroEntity(obj: Entity) {
   zeroVector(obj.position)
   zeroVector(obj.velocity)
   obj.health = 0
-  obj.items.clear()
+  obj.items.length = 0
   obj.isActive = false
 }
 
 /*
  * --------------------------------------------------
- * entities (array of structures)
+ * entities (Array Of Structures)
  * --------------------------------------------------
  */
 
-export const MAX_ENTITIES_COUNT = 2048
+export const MAX_ENTITIES = 2048
 
 /** An array of Entity objects (structures). */
 export const entities = new Array<Entity>(2048)
@@ -130,30 +147,20 @@ export function zeroEntities() {
 }
 
 /** Zero an object at a specific index within the entities array of structures. */
-export function zeroEntityAt(index: number) {
+export function zeroEntitiesAt(index: number) {
   zeroEntity(entities[index])
 }
 
 /*
  * --------------------------------------------------
- * particle (structure of arrays)
+ * particle (Structure Of Arrays)
  * --------------------------------------------------
  */
 
 export const MAX_PARTICLE_COUNT = 1024
 
-export let posX = new Array<number>(1024).fill(0)
-export let posY = new Array<number>(1024).fill(0)
-
-/** Set the value of the posX field within the particle structure of arrays. */
-export function setPosX(value: Array<number>) {
-  posX = value
-}
-
-/** Set the value of the posY field within the particle structure of arrays. */
-export function setPosY(value: Array<number>) {
-  posY = value
-}
+export const posX = new Array<number>(1024).fill(0)
+export const posY = new Array<number>(1024).fill(0)
 
 /** Zero an index within the particle structure of arrays. */
 export function zeroParticle(idx: number) {

@@ -39,7 +39,7 @@ function addFieldDefinition(field: string, length: string, output: Array<string>
       output.push(`export const ${fieldName} = new Array<boolean>(${length}).fill(false)`);
       break;
     default:
-      output.push(`export const ${fieldName} = new Array<${getTypeName(fieldType)}>(${length}).fill(null).map(() => create${capitalize(fieldType)})()`);
+      output.push(`export const ${fieldName} = new Array<${getTypeName(fieldType)}>(${length}).fill(null).map(() => create${capitalize(fieldType)}())`);
   }
 }
 

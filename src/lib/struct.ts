@@ -23,7 +23,7 @@ function addStructCreateFunction(name: string, fields: Array<string>, output: Ar
   output.push("");
   output.push(`/** Create a new ${capitalize(name)} object. */`);
   output.push(`export function create${capitalize(name)}() {`);
-  output.push(`  const obj = Object.create(null) as ${capitalize(name)}`);
+  output.push(`  const obj: ${capitalize(name)} = Object.create(null)`);
   for (const field of fields) {
     const [fieldName, fieldType, fieldArrayType, fieldArrayLength = ""] = field.split(" ");
     switch (fieldType) {

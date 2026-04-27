@@ -1,5 +1,5 @@
 game group
-activeEntities set number
+activeEntities array number
 destroyedEntities array entity
 player entity
 
@@ -11,11 +11,11 @@ entity struct
 position vector
 velocity vector
 health number
-items set number
+items array number
 isActive boolean
 
 entities aos 2048 entity
 
 particle soa 1024
-posX array number
-posY array number
+posX number
+posY number
