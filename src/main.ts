@@ -8,7 +8,7 @@ import { addStructureOfArrays } from "./lib/soa.js";
 import { addStruct } from "./lib/struct.js";
 
 const inputFile = process.argv[2];
-const outputFile = process.argv[3] || `${inputFile}.ts`;
+const outputFile = process.argv[3] || `${inputFile.replace(/\.md$/, "")}.ts`;
 const input = fs.readFileSync(inputFile, "utf-8");
 const output: Array<string> = [];
 
@@ -18,17 +18,18 @@ output.push(" */");
 
 const blocks = input
   .split("\n")
-  .filter((line) => !line.startsWith("#"))
+  .filter((line) => !line.startsWith("<!--"))
   .join("\n")
   .trim()
   .split("\n\n");
 
 for (const block of blocks) {
-  const fields = block.split("\n");
-  const header = fields.shift();
+  const lines = block.split("\n");
+  const header = lines.shift()?.replace(/^#\s*/, "");
 
   if (!header) continue;
 
+  const fields = lines.map((line) => line.replace(/^-\s*/, ""));
   const [_, type] = header.split(" ");
 
   switch (type) {

@@ -16,7 +16,7 @@ If you're making a game in Javascript then you might (this was actually me):
 
 This library:
 
-- creates data structures based on a very easy syntax (I tried JSON, didn't feel it)
+- creates data structures based on Markdown file (see example below)
 - each data structure gets associated functions to zero out its memory so it can be reused
 
 ## Installation
@@ -33,41 +33,44 @@ npx game-data-gen <input-file-path> <optional-output-file-path>
 
 ## Example
 
-Create a plain text file somewhere in your source code (without a file extension).
+Create a Markdown file somewhere in your source code (without a file extension).
 
-For example `src/data/game`:
+For example `src/data.md`:
 
-```
-game group
-activeEntities array entity
-activeEntityIds array number
-playerId number
+```md
+# game group
+- activeEntities array entity
+- activeEntityIds array number
+- playerId number
 
-vector struct
-x number
-y number
+# vector struct
+- x number
+- y number
 
-entity struct
-position vector
-velocity vector
-health number
-items array number
-isActive boolean
+# entity struct
+- position vector
+- velocity vector
+<!-- stats -->
+- health number
+<!-- inventory -->
+- items array number
+<!-- flags -->
+- isActive boolean
 
-entities aos 2048 entity
+# entities aos 2048 entity
 
-particle soa 10_000
-type string
-pos Vector
+# particle soa 10_000
+- type string
+- pos Vector
 ```
 
 Run the package with (consider making this a script in your package.json):
 
 ```shell
-npx game-data-gen src/data/game
+npx game-data-gen src/data.md
 ```
 
-This will create or update the `src/data/game.ts` file (see below). The data and functions can then be imported from this file into your code.
+This will create or update the `src/data.ts` file (see below). The data and functions can then be imported from this file into your code.
 
 ```typescript
 /*

@@ -9,7 +9,7 @@
     "game-data-gen": "dist/main.js"
   },
   "scripts": {
-    "start": "tsc && node dist/main.js tests/data",
+    "start": "tsc && node dist/main.js tests/data.md",
     "build": "biome check && tsc"
   },
   "repository": {

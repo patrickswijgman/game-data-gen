@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 4/29/2026, 11:27:05 AM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/29/2026, 12:14:48 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -156,8 +156,8 @@ export function zeroEntities() {
 }
 
 /** Zero an object at a specific index within the entities array of structures. */
-export function zeroEntitiesAt(index: number) {
-  zeroEntity(entities[index])
+export function zeroEntitiesAt(i: number) {
+  zeroEntity(entities[i])
 }
 
 /*
