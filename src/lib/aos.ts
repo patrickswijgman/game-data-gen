@@ -32,7 +32,7 @@ function addArrayOfStructuresZeroFunction(name: string, type: string, length: st
 function addArrayOfStructuresZeroAtIndexFunction(name: string, type: string, output: Array<string>) {
   output.push("");
   output.push(`/** Zero an object at a specific index within the ${name} array of structures. */`);
-  output.push(`export function zero${capitalize(name)}At(index: number) {`);
-  output.push(`  zero${capitalize(type)}(${name}[index])`);
+  output.push(`export function zero${capitalize(name)}At(i: number) {`);
+  output.push(`  zero${capitalize(type)}(${name}[i])`);
   output.push("}");
 }
