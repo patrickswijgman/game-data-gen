@@ -39,7 +39,9 @@ For example `src/data/game`:
 
 ```
 game group
-activeEntities array number
+activeEntities array entity
+activeEntityIds array number
+playerId number
 
 vector struct
 x number
@@ -49,13 +51,14 @@ entity struct
 position vector
 velocity vector
 health number
+items array number
 isActive boolean
 
 entities aos 2048 entity
 
-particle soa 1024
-posX number
-posY number
+particle soa 10_000
+type string
+pos Vector
 ```
 
 Run the package with (consider making this a script in your package.json):
@@ -69,25 +72,54 @@ This will create or update the `src/data/game.ts` file (see below). The data and
 ```typescript
 /*
  * --------------------------------------------------
- * game (group)
+ * game (Group)
  * --------------------------------------------------
  */
 
-export const activeEntities = new Array<number>()
+export let activeEntities = new Array<Entity>()
+export let activeEntityIds = new Array<number>()
+export let playerId = 0
+
+/** Set the value of the activeEntities field within the game group. */
+export function setActiveEntities(value: Array<Entity>) {
+  activeEntities = value
+}
+
+/** Set the value of the activeEntityIds field within the game group. */
+export function setActiveEntityIds(value: Array<number>) {
+  activeEntityIds = value
+}
+
+/** Set the value of the playerId field within the game group. */
+export function setPlayerId(value: number) {
+  playerId = value
+}
 
 /** Zero the activeEntities field within the game group. */
 export function zeroActiveEntities() {
   activeEntities.length = 0
 }
 
+/** Zero the activeEntityIds field within the game group. */
+export function zeroActiveEntityIds() {
+  activeEntityIds.length = 0
+}
+
+/** Zero the playerId field within the game group. */
+export function zeroPlayerId() {
+  playerId = 0
+}
+
 /** Zero all fields within the game group. */
 export function zeroGameData() {
   activeEntities.length = 0
+  activeEntityIds.length = 0
+  playerId = 0
 }
 
 /*
  * --------------------------------------------------
- * vector (struct)
+ * vector (Struct)
  * --------------------------------------------------
  */
 
@@ -97,11 +129,24 @@ export type Vector = {
 }
 
 /** Create a new Vector object. */
-export function createVector(): Vector {
-  const obj = Object.create(null)
+export function createVector() {
+  const obj: Vector = Object.create(null)
   obj.x = 0
   obj.y = 0
   return obj
+}
+
+/** Copy the values of Vector object b into Vector object a. */
+export function copyVector(a: Vector, b: Vector) {
+  a.x = b.x
+  a.y = b.y
+}
+
+/** Clone the given Vector object. */
+export function cloneVector(obj: Vector) {
+  const clone = createVector()
+  copyVector(clone, obj)
+  return clone
 }
 
 /** Zero the given Vector object. */
@@ -112,7 +157,7 @@ export function zeroVector(obj: Vector) {
 
 /*
  * --------------------------------------------------
- * entity (struct)
+ * entity (Struct)
  * --------------------------------------------------
  */
 
@@ -120,17 +165,35 @@ export type Entity = {
   position: Vector
   velocity: Vector
   health: number
+  items: Array<number>
   isActive: boolean
 }
 
 /** Create a new Entity object. */
-export function createEntity(): Entity {
-  const obj = Object.create(null)
+export function createEntity() {
+  const obj: Entity = Object.create(null)
   obj.position = createVector()
   obj.velocity = createVector()
   obj.health = 0
+  obj.items = new Array<number>()
   obj.isActive = false
   return obj
+}
+
+/** Copy the values of Entity object b into Entity object a. */
+export function copyEntity(a: Entity, b: Entity) {
+  a.position = b.position
+  a.velocity = b.velocity
+  a.health = b.health
+  a.items = b.items
+  a.isActive = b.isActive
+}
+
+/** Clone the given Entity object. */
+export function cloneEntity(obj: Entity) {
+  const clone = createEntity()
+  copyEntity(clone, obj)
+  return clone
 }
 
 /** Zero the given Entity object. */
@@ -138,22 +201,20 @@ export function zeroEntity(obj: Entity) {
   zeroVector(obj.position)
   zeroVector(obj.velocity)
   obj.health = 0
+  obj.items.length = 0
   obj.isActive = false
 }
 
 /*
  * --------------------------------------------------
- * entities (array of structures)
+ * entities (Array Of Structures)
  * --------------------------------------------------
  */
 
 export const MAX_ENTITIES_COUNT = 2048
 
 /** An array of Entity objects (structures). */
-export const entities = new Array<Entity>(2048)
-for (let i=0; i<2048; i++) {
-  entities[i] = createEntity()
-}
+export const entities = Array.from({ length: 2048 }, createEntity)
 
 /** Zero all objects within the entities array of structures. */
 export function zeroEntities() {
@@ -162,36 +223,41 @@ export function zeroEntities() {
   }
 }
 
+/** Zero an object at a specific index within the entities array of structures. */
+export function zeroEntitiesAt(index: number) {
+  zeroEntity(entities[index])
+}
+
 /*
  * --------------------------------------------------
- * particle (structure of arrays)
+ * particle (Structure Of Arrays)
  * --------------------------------------------------
  */
 
-export const MAX_PARTICLE_COUNT = 1024
+export const MAX_PARTICLE_COUNT = 10_000
 
-export const posX = new Array<number>(1024).fill(0)
-export const posY = new Array<number>(1024).fill(0)
+export const type = new Array(10_000).fill("")
+export const pos = Array.from({ length: 10_000 }, createVector)
 
 /** Zero an index within the particle structure of arrays. */
 export function zeroParticle(idx: number) {
-  posX[idx] = 0
-  posY[idx] = 0
+  type[idx] = ""
+  zeroVector(pos[idx])
 }
 
-/** Zero the posX field within the particle structure of arrays. */
-export function zeroPosX() {
-  posX.fill(0)
+/** Zero the type field within the particle structure of arrays. */
+export function zeroType() {
+  type.fill("")
 }
 
-/** Zero the posY field within the particle structure of arrays. */
-export function zeroPosY() {
-  posY.fill(0)
+/** Zero the pos field within the particle structure of arrays. */
+export function zeroPos() {
+  pos.forEach(zeroVector)
 }
 
 /** Zero all fields within the particle structure of arrays. */
 export function zeroParticleData() {
-  posX.fill(0)
-  posY.fill(0)
+  type.fill("")
+  pos.forEach(zeroVector)
 }
 ```

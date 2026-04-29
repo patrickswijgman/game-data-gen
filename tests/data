@@ -1,7 +1,7 @@
 game group
-activeEntities array number
-destroyedEntities array entity
-player entity
+activeEntities array entity
+activeEntityIds array number
+playerId number
 
 vector struct
 x number
@@ -16,6 +16,6 @@ isActive boolean
 
 entities aos 2048 entity
 
-particle soa 1024
-posX number
-posY number
+particle soa 10_000
+type string
+pos Vector

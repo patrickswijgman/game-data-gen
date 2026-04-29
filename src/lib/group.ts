@@ -1,13 +1,13 @@
-import { ArrayType, FieldType } from "../consts.js";
+import { FieldType } from "../consts.js";
 import { addHeader, capitalize, getTypeName } from "./utils.js";
 
 export function addGroup(header: string, fields: Array<string>, output: Array<string>) {
-  const [name, _, baseLength] = header.split(" ");
+  const [name] = header.split(" ");
 
   addHeader(`${name} (Group)`, output);
 
   for (const field of fields) {
-    addFieldDefinition(field, baseLength, output);
+    addFieldDefinition(field, output);
   }
 
   for (const field of fields) {
@@ -15,15 +15,14 @@ export function addGroup(header: string, fields: Array<string>, output: Array<st
   }
 
   for (const field of fields) {
-    addFieldZeroFunction(name, field, baseLength, output);
+    addFieldZeroFunction(name, field, output);
   }
 
-  addZeroFunction(name, fields, baseLength, output);
+  addZeroFunction(name, fields, output);
 }
 
-function addFieldDefinition(field: string, baseLength: string, output: Array<string>) {
-  const [fieldName, fieldType, fieldArrayType, fieldLength] = field.split(" ");
-  const fieldArrayLength = baseLength || fieldLength || "";
+function addFieldDefinition(field: string, output: Array<string>) {
+  const [fieldName, fieldType, fieldArrayType] = field.split(" ");
 
   switch (fieldType) {
     case FieldType.STRING:
@@ -36,21 +35,7 @@ function addFieldDefinition(field: string, baseLength: string, output: Array<str
       output.push(`export let ${fieldName} = false`);
       break;
     case FieldType.ARRAY:
-      {
-        switch (fieldArrayType) {
-          case ArrayType.STRING:
-            output.push(`export let ${fieldName} = new Array<string>(${fieldArrayLength})${fieldArrayLength ? '.fill("")' : ""}`);
-            break;
-          case ArrayType.NUMBER:
-            output.push(`export let ${fieldName} = new Array<number>(${fieldArrayLength})${fieldArrayLength ? ".fill(0)" : ""}`);
-            break;
-          case ArrayType.BOOLEAN:
-            output.push(`export let ${fieldName} = new Array<boolean>(${fieldArrayLength})${fieldArrayLength ? ".fill(false)" : ""}`);
-            break;
-          default:
-            output.push(`export let ${fieldName} = new Array<${getTypeName(fieldArrayType)}>()`);
-        }
-      }
+      output.push(`export let ${fieldName} = new Array<${getTypeName(fieldArrayType)}>()`);
       break;
     default:
       output.push(`export let ${fieldName} = create${capitalize(fieldType)}()`);
@@ -66,29 +51,27 @@ function addFieldSetFunction(name: string, field: string, output: Array<string>)
   output.push("}");
 }
 
-function addFieldZeroFunction(name: string, field: string, baseLength: string, output: Array<string>) {
-  const [fieldName, fieldType, fieldArrayType, fieldLength] = field.split(" ");
-  const length = baseLength || fieldLength || "";
+function addFieldZeroFunction(name: string, field: string, output: Array<string>) {
+  const [fieldName, fieldType] = field.split(" ");
   output.push("");
   output.push(`/** Zero the ${fieldName} field within the ${name} group. */`);
   output.push(`export function zero${capitalize(fieldName)}() {`);
-  zeroField(fieldName, fieldType, fieldArrayType, length, output);
+  zeroField(fieldName, fieldType, output);
   output.push("}");
 }
 
-function addZeroFunction(name: string, fields: Array<string>, baseLength: string, output: Array<string>) {
+function addZeroFunction(name: string, fields: Array<string>, output: Array<string>) {
   output.push("");
   output.push(`/** Zero all fields within the ${name} group. */`);
   output.push(`export function zero${capitalize(name)}Data() {`);
   for (const field of fields) {
-    const [fieldName, fieldType, fieldArrayType, fieldLength] = field.split(" ");
-    const length = baseLength || fieldLength || "";
-    zeroField(fieldName, fieldType, fieldArrayType, length, output);
+    const [fieldName, fieldType] = field.split(" ");
+    zeroField(fieldName, fieldType, output);
   }
   output.push("}");
 }
 
-function zeroField(name: string, type: string, arrayType: string, length: string, output: Array<string>) {
+function zeroField(name: string, type: string, output: Array<string>) {
   switch (type) {
     case FieldType.STRING:
       output.push(`  ${name} = ""`);
@@ -100,21 +83,7 @@ function zeroField(name: string, type: string, arrayType: string, length: string
       output.push(`  ${name} = false`);
       break;
     case FieldType.ARRAY:
-      {
-        switch (arrayType) {
-          case ArrayType.STRING:
-            output.push(`  ${name}.${length ? 'fill("")' : "length = 0"}`);
-            break;
-          case ArrayType.NUMBER:
-            output.push(`  ${name}.${length ? "fill(0)" : "length = 0"}`);
-            break;
-          case ArrayType.BOOLEAN:
-            output.push(`  ${name}.${length ? "fill(false)" : "length = 0"}`);
-            break;
-          default:
-            output.push(`  ${name}.length = 0`);
-        }
-      }
+      output.push(`  ${name}.length = 0`);
       break;
     default:
       output.push(`  zero${capitalize(type)}(${name})`);

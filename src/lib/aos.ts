@@ -1,4 +1,4 @@
-import { addHeader, capitalize, getTypeName } from "./utils.js";
+import { addHeader, capitalize } from "./utils.js";
 
 export function addArrayOfStructures(header: string, output: Array<string>) {
   const [name, , length, type] = header.split(" ");
@@ -10,16 +10,13 @@ export function addArrayOfStructures(header: string, output: Array<string>) {
 }
 
 function addFieldMaxLengthConstant(name: string, length: string, output: Array<string>) {
-  output.push(`export const MAX_${name.toUpperCase()} = ${length}`);
+  output.push(`export const MAX_${name.toUpperCase()}_COUNT = ${length}`);
   output.push("");
 }
 
 function addArrayOfStructuresDefinition(name: string, type: string, length: string, output: Array<string>) {
   output.push(`/** An array of ${capitalize(type)} objects (structures). */`);
-  output.push(`export const ${name} = new Array<${getTypeName(type)}>(${length})`);
-  output.push(`for (let i=0; i<${length}; i++) {`);
-  output.push(`  ${name}[i] = create${capitalize(type)}()`);
-  output.push("}");
+  output.push(`export const ${name} = Array.from({ length: ${length} }, create${capitalize(type)})`);
 }
 
 function addArrayOfStructuresZeroFunction(name: string, type: string, length: string, output: Array<string>) {
