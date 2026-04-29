@@ -46,8 +46,8 @@ function addFieldSetFunction(name: string, field: string, output: Array<string>)
   const [fieldName, fieldType, fieldArrayType] = field.split(" ");
   output.push("");
   output.push(`/** Set the value of the ${fieldName} field within the ${name} group. */`);
-  output.push(`export function set${capitalize(fieldName)}(value: ${getTypeName(fieldType, fieldArrayType)}) {`);
-  output.push(`  ${fieldName} = value`);
+  output.push(`export function set${capitalize(fieldName)}(v: ${getTypeName(fieldType, fieldArrayType)}) {`);
+  output.push(`  ${fieldName} = v`);
   output.push("}");
 }
 

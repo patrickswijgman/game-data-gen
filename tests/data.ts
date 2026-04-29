@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 4/29/2026, 9:06:42 AM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/29/2026, 9:40:24 AM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -13,18 +13,18 @@ export let activeEntityIds = new Array<number>()
 export let playerId = 0
 
 /** Set the value of the activeEntities field within the game group. */
-export function setActiveEntities(value: Array<Entity>) {
-  activeEntities = value
+export function setActiveEntities(v: Array<Entity>) {
+  activeEntities = v
 }
 
 /** Set the value of the activeEntityIds field within the game group. */
-export function setActiveEntityIds(value: Array<number>) {
-  activeEntityIds = value
+export function setActiveEntityIds(v: Array<number>) {
+  activeEntityIds = v
 }
 
 /** Set the value of the playerId field within the game group. */
-export function setPlayerId(value: number) {
-  playerId = value
+export function setPlayerId(v: number) {
+  playerId = v
 }
 
 /** Zero the activeEntities field within the game group. */
@@ -172,9 +172,9 @@ export const type = new Array(10_000).fill("")
 export const pos = Array.from({ length: 10_000 }, createVector)
 
 /** Zero an index within the particle structure of arrays. */
-export function zeroParticle(idx: number) {
-  type[idx] = ""
-  zeroVector(pos[idx])
+export function zeroParticle(i: number) {
+  type[i] = ""
+  zeroVector(pos[i])
 }
 
 /** Zero the type field within the particle structure of arrays. */

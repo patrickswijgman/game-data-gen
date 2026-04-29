@@ -82,21 +82,21 @@ function zeroField(name: string, type: string, output: Array<string>) {
 function addFieldZeroAtIndexFunction(name: string, fields: Array<string>, output: Array<string>) {
   output.push("");
   output.push(`/** Zero an index within the ${name} structure of arrays. */`);
-  output.push(`export function zero${capitalize(name)}(idx: number) {`);
+  output.push(`export function zero${capitalize(name)}(i: number) {`);
   for (const field of fields) {
     const [fieldName, fieldType] = field.split(" ");
     switch (fieldType) {
       case ArrayType.STRING:
-        output.push(`  ${fieldName}[idx] = ""`);
+        output.push(`  ${fieldName}[i] = ""`);
         break;
       case ArrayType.NUMBER:
-        output.push(`  ${fieldName}[idx] = 0`);
+        output.push(`  ${fieldName}[i] = 0`);
         break;
       case ArrayType.BOOLEAN:
-        output.push(`  ${fieldName}[idx] = false`);
+        output.push(`  ${fieldName}[i] = false`);
         break;
       default:
-        output.push(`  zero${capitalize(fieldType)}(${fieldName}[idx])`);
+        output.push(`  zero${capitalize(fieldType)}(${fieldName}[i])`);
     }
   }
   output.push("}");
