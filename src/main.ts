@@ -17,6 +17,9 @@ output.push(` * Generated with game-data-gen on ${new Date().toLocaleString()}. 
 output.push(" */");
 
 const blocks = input
+  .replace(/^# (.+)\n\n- /gm, "$1\n")
+  .replace(/^# /gm, "")
+  .replace(/^- /gm, "")
   .split("\n")
   .filter((line) => !line.startsWith("<!--"))
   .join("\n")
@@ -24,12 +27,11 @@ const blocks = input
   .split("\n\n");
 
 for (const block of blocks) {
-  const lines = block.split("\n");
-  const header = lines.shift()?.replace(/^#\s*/, "");
+  const fields = block.split("\n");
+  const header = fields.shift();
 
   if (!header) continue;
 
-  const fields = lines.map((line) => line.replace(/^-\s*/, ""));
   const [_, type] = header.split(" ");
 
   switch (type) {
