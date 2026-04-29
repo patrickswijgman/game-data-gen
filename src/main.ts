@@ -16,7 +16,12 @@ output.push("/*");
 output.push(` * Generated with game-data-gen on ${new Date().toLocaleString()}. DO NOT MODIFY THIS FILE!`);
 output.push(" */");
 
-const blocks = input.trim().split("\n\n");
+const blocks = input
+  .split("\n")
+  .filter((line) => !line.startsWith("#"))
+  .join("\n")
+  .trim()
+  .split("\n\n");
 
 for (const block of blocks) {
   const fields = block.split("\n");
