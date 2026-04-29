@@ -20,5 +20,8 @@
     "@biomejs/biome": "^2.4.11",
     "@types/node": "^24.12.2",
     "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "marked": "^18.0.2"
   }
 }
