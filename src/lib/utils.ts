@@ -1,4 +1,4 @@
-import { FieldType, Type } from "../consts.js";
+import { ArrayType, FieldType, Type } from "../consts.js";
 
 export function addHeader(name: string, output: Array<string>) {
   output.push("");
@@ -25,12 +25,36 @@ export function getTypeName(type: string, arrayType: string = ""): string {
       return "group";
     case FieldType.STRING:
       return "string";
-    case FieldType.NUMBER:
-      return "number";
     case FieldType.BOOLEAN:
       return "boolean";
-    case FieldType.ARRAY:
-      return `Array<${getTypeName(arrayType)}>`;
+    case FieldType.NUMBER:
+      return "number";
+    case FieldType.ARRAY: {
+      switch (arrayType) {
+        case ArrayType.STRING:
+          return "Array<string>";
+        case ArrayType.BOOLEAN:
+          return "Array<boolean>";
+        case ArrayType.INT_8:
+          return "Int8Array";
+        case ArrayType.INT_16:
+          return "Int16Array";
+        case ArrayType.INT_32:
+          return "Int32Array";
+        case ArrayType.UINT_8:
+          return "Uint8Array";
+        case ArrayType.UINT_16:
+          return "Uint16Array";
+        case ArrayType.UINT_32:
+          return "Uint32Array";
+        case ArrayType.FLOAT_32:
+          return "Float32Array";
+        case ArrayType.FLOAT_64:
+          return "Float64Array";
+        default:
+          return `Array<${capitalize(arrayType)}>`;
+      }
+    }
     default:
       return capitalize(type);
   }

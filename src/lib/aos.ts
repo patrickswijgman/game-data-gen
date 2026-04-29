@@ -5,7 +5,7 @@ export function addArrayOfStructures(header: string, output: Array<string>) {
   addHeader(`${name} (Array Of Structures)`, output);
   addFieldMaxLengthConstant(name, length, output);
   addArrayOfStructuresDefinition(name, type, length, output);
-  addArrayOfStructuresZeroFunction(name, type, length, output);
+  addArrayOfStructuresZeroFunction(name, type, output);
   addArrayOfStructuresZeroAtIndexFunction(name, type, output);
 }
 
@@ -19,13 +19,11 @@ function addArrayOfStructuresDefinition(name: string, type: string, length: stri
   output.push(`export const ${name} = Array.from({ length: ${length} }, create${capitalize(type)})`);
 }
 
-function addArrayOfStructuresZeroFunction(name: string, type: string, length: string, output: Array<string>) {
+function addArrayOfStructuresZeroFunction(name: string, type: string, output: Array<string>) {
   output.push("");
   output.push(`/** Zero all objects within the ${name} array of structures. */`);
   output.push(`export function zero${capitalize(name)}() {`);
-  output.push(`  for (let i=0; i<${length}; i++) {`);
-  output.push(`    zero${capitalize(type)}(${name}[i])`);
-  output.push("  }");
+  output.push(`  ${name}.forEach(zero${capitalize(type)})`);
   output.push("}");
 }
 

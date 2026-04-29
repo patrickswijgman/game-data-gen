@@ -32,14 +32,33 @@ function addFieldDefinition(field: string, length: string, output: Array<string>
     case ArrayType.STRING:
       output.push(`export const ${fieldName} = new Array<string>(${length}).fill("")`);
       break;
-    case ArrayType.NUMBER:
-      output.push(`export const ${fieldName} = new Array<number>(${length}).fill(0)`);
-      break;
     case ArrayType.BOOLEAN:
       output.push(`export const ${fieldName} = new Array<boolean>(${length}).fill(false)`);
       break;
-    default:
-      output.push(`export const ${fieldName} = Array.from({ length: ${length} }, create${capitalize(fieldType)})`);
+    case ArrayType.INT_8:
+      output.push(`export const ${fieldName} = new Int8Array(${length})`);
+      break;
+    case ArrayType.INT_16:
+      output.push(`export const ${fieldName} = new Int16Array(${length})`);
+      break;
+    case ArrayType.INT_32:
+      output.push(`export const ${fieldName} = new Int32Array(${length})`);
+      break;
+    case ArrayType.UINT_8:
+      output.push(`export const ${fieldName} = new Uint8Array(${length})`);
+      break;
+    case ArrayType.UINT_16:
+      output.push(`export const ${fieldName} = new Uint16Array(${length})`);
+      break;
+    case ArrayType.UINT_32:
+      output.push(`export const ${fieldName} = new Uint32Array(${length})`);
+      break;
+    case ArrayType.FLOAT_32:
+      output.push(`export const ${fieldName} = new Float32Array(${length})`);
+      break;
+    case ArrayType.FLOAT_64:
+      output.push(`export const ${fieldName} = new Float64Array(${length})`);
+      break;
   }
 }
 
@@ -55,7 +74,7 @@ function addFieldZeroFunction(name: string, field: string, output: Array<string>
 function addZeroFunction(name: string, fields: Array<string>, output: Array<string>) {
   output.push("");
   output.push(`/** Zero all fields within the ${name} structure of arrays. */`);
-  output.push(`export function zero${capitalize(name)}Data() {`);
+  output.push(`export function zero${capitalize(name)}() {`);
   for (const field of fields) {
     const [fieldName, fieldType] = field.split(" ");
     zeroField(fieldName, fieldType, output);
@@ -68,35 +87,45 @@ function zeroField(name: string, type: string, output: Array<string>) {
     case ArrayType.STRING:
       output.push(`  ${name}.fill("")`);
       break;
-    case ArrayType.NUMBER:
-      output.push(`  ${name}.fill(0)`);
-      break;
     case ArrayType.BOOLEAN:
       output.push(`  ${name}.fill(false)`);
       break;
-    default:
-      output.push(`  ${name}.forEach(zero${capitalize(type)})`);
+    case ArrayType.INT_8:
+    case ArrayType.INT_16:
+    case ArrayType.INT_32:
+    case ArrayType.UINT_8:
+    case ArrayType.UINT_16:
+    case ArrayType.UINT_32:
+    case ArrayType.FLOAT_32:
+    case ArrayType.FLOAT_64:
+      output.push(`  ${name}.fill(0)`);
+      break;
   }
 }
 
 function addFieldZeroAtIndexFunction(name: string, fields: Array<string>, output: Array<string>) {
   output.push("");
   output.push(`/** Zero an index within the ${name} structure of arrays. */`);
-  output.push(`export function zero${capitalize(name)}(i: number) {`);
+  output.push(`export function zero${capitalize(name)}At(i: number) {`);
   for (const field of fields) {
     const [fieldName, fieldType] = field.split(" ");
     switch (fieldType) {
       case ArrayType.STRING:
         output.push(`  ${fieldName}[i] = ""`);
         break;
-      case ArrayType.NUMBER:
-        output.push(`  ${fieldName}[i] = 0`);
-        break;
       case ArrayType.BOOLEAN:
         output.push(`  ${fieldName}[i] = false`);
         break;
-      default:
-        output.push(`  zero${capitalize(fieldType)}(${fieldName}[i])`);
+      case ArrayType.INT_8:
+      case ArrayType.INT_16:
+      case ArrayType.INT_32:
+      case ArrayType.UINT_8:
+      case ArrayType.UINT_16:
+      case ArrayType.UINT_32:
+      case ArrayType.FLOAT_32:
+      case ArrayType.FLOAT_64:
+        output.push(`  ${fieldName}[i] = 0`);
+        break;
     }
   }
   output.push("}");

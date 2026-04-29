@@ -1,194 +1,329 @@
 /*
- * Generated with game-data-gen on 4/29/2026, 6:46:24 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/29/2026, 8:34:48 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
  * --------------------------------------------------
- * game (Group)
+ * vec (Struct)
  * --------------------------------------------------
  */
 
-export let activeEntities = new Array<Entity>()
-export let activeEntityIds = new Array<number>()
-export let playerId = 0
-
-/** Set the value of the activeEntities field within the game group. */
-export function setActiveEntities(v: Array<Entity>) {
-  activeEntities = v
-}
-
-/** Set the value of the activeEntityIds field within the game group. */
-export function setActiveEntityIds(v: Array<number>) {
-  activeEntityIds = v
-}
-
-/** Set the value of the playerId field within the game group. */
-export function setPlayerId(v: number) {
-  playerId = v
-}
-
-/** Zero the activeEntities field within the game group. */
-export function zeroActiveEntities() {
-  activeEntities.length = 0
-}
-
-/** Zero the activeEntityIds field within the game group. */
-export function zeroActiveEntityIds() {
-  activeEntityIds.length = 0
-}
-
-/** Zero the playerId field within the game group. */
-export function zeroPlayerId() {
-  playerId = 0
-}
-
-/** Zero all fields within the game group. */
-export function zeroGameData() {
-  activeEntities.length = 0
-  activeEntityIds.length = 0
-  playerId = 0
-}
-
-/*
- * --------------------------------------------------
- * vector (Struct)
- * --------------------------------------------------
- */
-
-export type Vector = {
+export type Vec = {
   x: number
   y: number
 }
 
-/** Create a new Vector object. */
-export function createVector() {
-  const obj: Vector = Object.create(null)
+/** Create a new Vec object. */
+export function createVec() {
+  const obj: Vec = Object.create(null)
   obj.x = 0
   obj.y = 0
   return obj
 }
 
-/** Copy the values of Vector object b into Vector object a. */
-export function copyVector(a: Vector, b: Vector) {
+/** Copy the values of Vec object b into Vec object a. */
+export function copyVec(a: Vec, b: Vec) {
   a.x = b.x
   a.y = b.y
 }
 
-/** Clone the given Vector object. */
-export function cloneVector(obj: Vector) {
-  const clone = createVector()
-  copyVector(clone, obj)
+/** Clone the given Vec object. */
+export function cloneVec(obj: Vec) {
+  const clone = createVec()
+  copyVec(clone, obj)
   return clone
 }
 
-/** Zero the given Vector object. */
-export function zeroVector(obj: Vector) {
+/** Zero the given Vec object. */
+export function zeroVec(obj: Vec) {
   obj.x = 0
   obj.y = 0
 }
 
 /*
  * --------------------------------------------------
- * entity (Struct)
+ * obj (Struct)
  * --------------------------------------------------
  */
 
-export type Entity = {
-  position: Vector
-  velocity: Vector
-  health: number
-  items: Array<number>
-  isActive: boolean
+export type Obj = {
+  str: string
+  num: number
+  bool: boolean
+  vec: Vec
 }
 
-/** Create a new Entity object. */
-export function createEntity() {
-  const obj: Entity = Object.create(null)
-  obj.position = createVector()
-  obj.velocity = createVector()
-  obj.health = 0
-  obj.items = new Array<number>()
-  obj.isActive = false
+/** Create a new Obj object. */
+export function createObj() {
+  const obj: Obj = Object.create(null)
+  obj.str = ""
+  obj.num = 0
+  obj.bool = false
+  obj.vec = createVec()
   return obj
 }
 
-/** Copy the values of Entity object b into Entity object a. */
-export function copyEntity(a: Entity, b: Entity) {
-  a.position = b.position
-  a.velocity = b.velocity
-  a.health = b.health
-  a.items = b.items
-  a.isActive = b.isActive
+/** Copy the values of Obj object b into Obj object a. */
+export function copyObj(a: Obj, b: Obj) {
+  a.str = b.str
+  a.num = b.num
+  a.bool = b.bool
+  a.vec = b.vec
 }
 
-/** Clone the given Entity object. */
-export function cloneEntity(obj: Entity) {
-  const clone = createEntity()
-  copyEntity(clone, obj)
+/** Clone the given Obj object. */
+export function cloneObj(obj: Obj) {
+  const clone = createObj()
+  copyObj(clone, obj)
   return clone
 }
 
-/** Zero the given Entity object. */
-export function zeroEntity(obj: Entity) {
-  zeroVector(obj.position)
-  zeroVector(obj.velocity)
-  obj.health = 0
-  obj.items.length = 0
-  obj.isActive = false
+/** Zero the given Obj object. */
+export function zeroObj(obj: Obj) {
+  obj.str = ""
+  obj.num = 0
+  obj.bool = false
+  zeroVec(obj.vec)
 }
 
 /*
  * --------------------------------------------------
- * entities (Array Of Structures)
+ * data (Group)
  * --------------------------------------------------
  */
 
-export const MAX_ENTITIES_COUNT = 2048
+export let gStr = ""
+export let gNum = 0
+export let gBool = false
+export const gArrStr = new Array<string>(4).fill("")
+export const gArrInt8 = new Int8Array(4)
+export const gArrInt16 = new Int16Array(4)
+export const gArrInt32 = new Int32Array(4)
+export const gArrUint8 = new Uint8Array(4)
+export const gArrUint16 = new Uint16Array(4)
+export const gArrUint32 = new Uint32Array(4)
+export const gArrFloat32 = new Float32Array(4)
+export const gArrFloat64 = new Float64Array(4)
+export const gArrBool = new Array<boolean>(4).fill(false)
+export const gArrStrEmpty = new Array<string>().fill("")
 
-/** An array of Entity objects (structures). */
-export const entities = Array.from({ length: 2048 }, createEntity)
-
-/** Zero all objects within the entities array of structures. */
-export function zeroEntities() {
-  for (let i=0; i<2048; i++) {
-    zeroEntity(entities[i])
-  }
+/** Set the value of the gStr field within the data group. */
+export function setGStr(v: string) {
+  gStr = v
 }
 
-/** Zero an object at a specific index within the entities array of structures. */
-export function zeroEntitiesAt(i: number) {
-  zeroEntity(entities[i])
+/** Set the value of the gNum field within the data group. */
+export function setGNum(v: number) {
+  gNum = v
+}
+
+/** Set the value of the gBool field within the data group. */
+export function setGBool(v: boolean) {
+  gBool = v
+}
+
+/** Zero the gStr field within the data group. */
+export function zeroGStr() {
+  gStr = ""
+}
+
+/** Zero the gNum field within the data group. */
+export function zeroGNum() {
+  gNum = 0
+}
+
+/** Zero the gBool field within the data group. */
+export function zeroGBool() {
+  gBool = false
+}
+
+/** Zero the gArrStr field within the data group. */
+export function zeroGArrStr() {
+  gArrStr.fill("")
+}
+
+/** Zero the gArrInt8 field within the data group. */
+export function zeroGArrInt8() {
+  gArrInt8.fill(0)
+}
+
+/** Zero the gArrInt16 field within the data group. */
+export function zeroGArrInt16() {
+  gArrInt16.fill(0)
+}
+
+/** Zero the gArrInt32 field within the data group. */
+export function zeroGArrInt32() {
+  gArrInt32.fill(0)
+}
+
+/** Zero the gArrUint8 field within the data group. */
+export function zeroGArrUint8() {
+  gArrUint8.fill(0)
+}
+
+/** Zero the gArrUint16 field within the data group. */
+export function zeroGArrUint16() {
+  gArrUint16.fill(0)
+}
+
+/** Zero the gArrUint32 field within the data group. */
+export function zeroGArrUint32() {
+  gArrUint32.fill(0)
+}
+
+/** Zero the gArrFloat32 field within the data group. */
+export function zeroGArrFloat32() {
+  gArrFloat32.fill(0)
+}
+
+/** Zero the gArrFloat64 field within the data group. */
+export function zeroGArrFloat64() {
+  gArrFloat64.fill(0)
+}
+
+/** Zero the gArrBool field within the data group. */
+export function zeroGArrBool() {
+  gArrBool.fill(false)
+}
+
+/** Zero the gArrStrEmpty field within the data group. */
+export function zeroGArrStrEmpty() {
+  gArrStrEmpty.fill("")
+}
+
+/** Zero all fields within the data group. */
+export function zeroData() {
+  gStr = ""
+  gNum = 0
+  gBool = false
+  gArrStr.fill("")
+  gArrInt8.fill(0)
+  gArrInt16.fill(0)
+  gArrInt32.fill(0)
+  gArrUint8.fill(0)
+  gArrUint16.fill(0)
+  gArrUint32.fill(0)
+  gArrFloat32.fill(0)
+  gArrFloat64.fill(0)
+  gArrBool.fill(false)
+  gArrStrEmpty.fill("")
 }
 
 /*
  * --------------------------------------------------
- * particle (Structure Of Arrays)
+ * objs (Array Of Structures)
  * --------------------------------------------------
  */
 
-export const MAX_PARTICLE_COUNT = 10_000
+export const MAX_OBJS_COUNT = 8
 
-export const type = new Array<string>(10_000).fill("")
-export const pos = Array.from({ length: 10_000 }, createVector)
+/** An array of Obj objects (structures). */
+export const objs = Array.from({ length: 8 }, createObj)
 
-/** Zero an index within the particle structure of arrays. */
-export function zeroParticle(i: number) {
-  type[i] = ""
-  zeroVector(pos[i])
+/** Zero all objects within the objs array of structures. */
+export function zeroObjs() {
+  objs.forEach(zeroObj)
 }
 
-/** Zero the type field within the particle structure of arrays. */
-export function zeroType() {
-  type.fill("")
+/** Zero an object at a specific index within the objs array of structures. */
+export function zeroObjsAt(i: number) {
+  zeroObj(objs[i])
 }
 
-/** Zero the pos field within the particle structure of arrays. */
-export function zeroPos() {
-  pos.forEach(zeroVector)
+/*
+ * --------------------------------------------------
+ * pool (Structure Of Arrays)
+ * --------------------------------------------------
+ */
+
+export const MAX_POOL_COUNT = 8
+
+export const sStr = new Array<string>(8).fill("")
+export const sBool = new Array<boolean>(8).fill(false)
+export const sInt8 = new Int8Array(8)
+export const sInt16 = new Int16Array(8)
+export const sInt32 = new Int32Array(8)
+export const sUint8 = new Uint8Array(8)
+export const sUint16 = new Uint16Array(8)
+export const sUint32 = new Uint32Array(8)
+export const sFloat32 = new Float32Array(8)
+export const sFloat64 = new Float64Array(8)
+
+/** Zero an index within the pool structure of arrays. */
+export function zeroPoolAt(i: number) {
+  sStr[i] = ""
+  sBool[i] = false
+  sInt8[i] = 0
+  sInt16[i] = 0
+  sInt32[i] = 0
+  sUint8[i] = 0
+  sUint16[i] = 0
+  sUint32[i] = 0
+  sFloat32[i] = 0
+  sFloat64[i] = 0
 }
 
-/** Zero all fields within the particle structure of arrays. */
-export function zeroParticleData() {
-  type.fill("")
-  pos.forEach(zeroVector)
+/** Zero the sStr field within the pool structure of arrays. */
+export function zeroSStr() {
+  sStr.fill("")
+}
+
+/** Zero the sBool field within the pool structure of arrays. */
+export function zeroSBool() {
+  sBool.fill(false)
+}
+
+/** Zero the sInt8 field within the pool structure of arrays. */
+export function zeroSInt8() {
+  sInt8.fill(0)
+}
+
+/** Zero the sInt16 field within the pool structure of arrays. */
+export function zeroSInt16() {
+  sInt16.fill(0)
+}
+
+/** Zero the sInt32 field within the pool structure of arrays. */
+export function zeroSInt32() {
+  sInt32.fill(0)
+}
+
+/** Zero the sUint8 field within the pool structure of arrays. */
+export function zeroSUint8() {
+  sUint8.fill(0)
+}
+
+/** Zero the sUint16 field within the pool structure of arrays. */
+export function zeroSUint16() {
+  sUint16.fill(0)
+}
+
+/** Zero the sUint32 field within the pool structure of arrays. */
+export function zeroSUint32() {
+  sUint32.fill(0)
+}
+
+/** Zero the sFloat32 field within the pool structure of arrays. */
+export function zeroSFloat32() {
+  sFloat32.fill(0)
+}
+
+/** Zero the sFloat64 field within the pool structure of arrays. */
+export function zeroSFloat64() {
+  sFloat64.fill(0)
+}
+
+/** Zero all fields within the pool structure of arrays. */
+export function zeroPool() {
+  sStr.fill("")
+  sBool.fill(false)
+  sInt8.fill(0)
+  sInt16.fill(0)
+  sInt32.fill(0)
+  sUint8.fill(0)
+  sUint16.fill(0)
+  sUint32.fill(0)
+  sFloat32.fill(0)
+  sFloat64.fill(0)
 }
