@@ -9,6 +9,7 @@ import { addStruct } from "./lib/struct.js";
 
 const inputFile = process.argv[2];
 const outputFile = process.argv[3] || `${inputFile.replace(/\.md$/, "")}.ts`;
+
 const input = fs.readFileSync(inputFile, "utf-8");
 const output: Array<string> = [];
 

@@ -30,13 +30,13 @@ function addFieldDefinition(field: string, length: string, output: Array<string>
   const [fieldName, fieldType] = field.split(" ");
   switch (fieldType) {
     case ArrayType.STRING:
-      output.push(`export const ${fieldName} = new Array(${length}).fill("")`);
+      output.push(`export const ${fieldName} = new Array<string>(${length}).fill("")`);
       break;
     case ArrayType.NUMBER:
-      output.push(`export const ${fieldName} = new Array(${length}).fill(0)`);
+      output.push(`export const ${fieldName} = new Array<number>(${length}).fill(0)`);
       break;
     case ArrayType.BOOLEAN:
-      output.push(`export const ${fieldName} = new Array(${length}).fill(false)`);
+      output.push(`export const ${fieldName} = new Array<boolean>(${length}).fill(false)`);
       break;
     default:
       output.push(`export const ${fieldName} = Array.from({ length: ${length} }, create${capitalize(fieldType)})`);

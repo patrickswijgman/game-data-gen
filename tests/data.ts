@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 4/29/2026, 12:30:36 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 4/29/2026, 3:59:21 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -168,7 +168,7 @@ export function zeroEntitiesAt(i: number) {
 
 export const MAX_PARTICLE_COUNT = 10_000
 
-export const type = new Array(10_000).fill("")
+export const type = new Array<string>(10_000).fill("")
 export const pos = Array.from({ length: 10_000 }, createVector)
 
 /** Zero an index within the particle structure of arrays. */
