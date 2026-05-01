@@ -1,20 +1,14 @@
 export const enum Type {
   SOA = "soa",
-  AOS = "aos",
-  STRUCT = "struct",
   GROUP = "group",
 }
 
 export const enum FieldType {
-  STRING = "string",
-  BOOLEAN = "boolean",
   NUMBER = "number",
   ARRAY = "array",
 }
 
 export const enum ArrayType {
-  STRING = "string",
-  BOOLEAN = "boolean",
   INT_8 = "int8",
   INT_16 = "int16",
   INT_32 = "int32",

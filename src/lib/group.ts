@@ -1,5 +1,5 @@
 import { ArrayType, FieldType } from "../consts.js";
-import { addHeader, capitalize, getTypeName } from "./utils.js";
+import { addHeader, capitalize } from "./utils.js";
 
 export function addGroup(header: string, fields: Array<string>, output: Array<string>) {
   const [name] = header.split(" ");
@@ -15,6 +15,14 @@ export function addGroup(header: string, fields: Array<string>, output: Array<st
   }
 
   for (const field of fields) {
+    addFieldPushFunction(name, field, output);
+  }
+
+  for (const field of fields) {
+    addFieldPopFunction(name, field, output);
+  }
+
+  for (const field of fields) {
     addFieldZeroFunction(name, field, output);
   }
 
@@ -24,72 +32,84 @@ export function addGroup(header: string, fields: Array<string>, output: Array<st
 function addFieldDefinition(field: string, output: Array<string>) {
   const [fieldName, fieldType, fieldArrayType, fieldArrayLength = ""] = field.split(" ");
   switch (fieldType) {
-    case FieldType.STRING:
-      output.push(`export let ${fieldName} = ""`);
-      break;
-    case FieldType.BOOLEAN:
-      output.push(`export let ${fieldName} = false`);
-      break;
     case FieldType.NUMBER:
       output.push(`export let ${fieldName} = 0`);
       break;
     case FieldType.ARRAY:
-      switch (fieldArrayType) {
-        case ArrayType.STRING:
-          output.push(`export const ${fieldName} = new Array<string>(${fieldArrayLength}).fill("")`);
-          break;
-        case ArrayType.BOOLEAN:
-          output.push(`export const ${fieldName} = new Array<boolean>(${fieldArrayLength}).fill(false)`);
-          break;
-        case ArrayType.INT_8:
-          output.push(`export const ${fieldName} = new Int8Array(${fieldArrayLength})`);
-          break;
-        case ArrayType.INT_16:
-          output.push(`export const ${fieldName} = new Int16Array(${fieldArrayLength})`);
-          break;
-        case ArrayType.INT_32:
-          output.push(`export const ${fieldName} = new Int32Array(${fieldArrayLength})`);
-          break;
-        case ArrayType.UINT_8:
-          output.push(`export const ${fieldName} = new Uint8Array(${fieldArrayLength})`);
-          break;
-        case ArrayType.UINT_16:
-          output.push(`export const ${fieldName} = new Uint16Array(${fieldArrayLength})`);
-          break;
-        case ArrayType.UINT_32:
-          output.push(`export const ${fieldName} = new Uint32Array(${fieldArrayLength})`);
-          break;
-        case ArrayType.FLOAT_32:
-          output.push(`export const ${fieldName} = new Float32Array(${fieldArrayLength})`);
-          break;
-        case ArrayType.FLOAT_64:
-          output.push(`export const ${fieldName} = new Float64Array(${fieldArrayLength})`);
-          break;
+      {
+        switch (fieldArrayType) {
+          case ArrayType.INT_8:
+            output.push(`export const ${fieldName} = new Int8Array(${fieldArrayLength})`);
+            break;
+          case ArrayType.INT_16:
+            output.push(`export const ${fieldName} = new Int16Array(${fieldArrayLength})`);
+            break;
+          case ArrayType.INT_32:
+            output.push(`export const ${fieldName} = new Int32Array(${fieldArrayLength})`);
+            break;
+          case ArrayType.UINT_8:
+            output.push(`export const ${fieldName} = new Uint8Array(${fieldArrayLength})`);
+            break;
+          case ArrayType.UINT_16:
+            output.push(`export const ${fieldName} = new Uint16Array(${fieldArrayLength})`);
+            break;
+          case ArrayType.UINT_32:
+            output.push(`export const ${fieldName} = new Uint32Array(${fieldArrayLength})`);
+            break;
+          case ArrayType.FLOAT_32:
+            output.push(`export const ${fieldName} = new Float32Array(${fieldArrayLength})`);
+            break;
+          case ArrayType.FLOAT_64:
+            output.push(`export const ${fieldName} = new Float64Array(${fieldArrayLength})`);
+            break;
+        }
+        if (isDynamicArray(fieldType, fieldArrayLength)) {
+          output.push(`export let ${fieldName}Count = 0`);
+        }
       }
       break;
   }
 }
 
 function addFieldSetFunction(name: string, field: string, output: Array<string>) {
-  const [fieldName, fieldType, fieldArrayType] = field.split(" ");
-  switch (fieldType) {
-    case FieldType.STRING:
-    case FieldType.BOOLEAN:
-    case FieldType.NUMBER:
-      output.push("");
-      output.push(`/** Set the value of the ${fieldName} field within the ${name} group. */`);
-      output.push(`export function set${capitalize(fieldName)}(v: ${getTypeName(fieldType, fieldArrayType)}) {`);
-      output.push(`  ${fieldName} = v`);
-      output.push("}");
+  const [fieldName, fieldType] = field.split(" ");
+  if (fieldType === FieldType.NUMBER) {
+    output.push("");
+    output.push(`/** Set the value of the ${fieldName} field within the ${name} group. */`);
+    output.push(`export function set${capitalize(fieldName)}(v: number) {`);
+    output.push(`  ${fieldName} = v`);
+    output.push("}");
+  }
+}
+
+function addFieldPushFunction(name: string, field: string, output: Array<string>) {
+  const [fieldName, fieldType, , fieldArrayLength] = field.split(" ");
+  if (isDynamicArray(fieldType, fieldArrayLength)) {
+    output.push("");
+    output.push(`/** Push a value onto the ${fieldName} field within the ${name} group. */`);
+    output.push(`export function push${capitalize(fieldName)}(v: number) {`);
+    output.push(`  ${fieldName}[${fieldName}Count++] = v`);
+    output.push("}");
+  }
+}
+
+function addFieldPopFunction(name: string, field: string, output: Array<string>) {
+  const [fieldName, fieldType, , fieldArrayLength] = field.split(" ");
+  if (isDynamicArray(fieldType, fieldArrayLength)) {
+    output.push("");
+    output.push(`/** Pop a value from the ${fieldName} field within the ${name} group. */`);
+    output.push(`export function pop${capitalize(fieldName)}() {`);
+    output.push(`  return ${fieldName}[--${fieldName}Count]`);
+    output.push("}");
   }
 }
 
 function addFieldZeroFunction(name: string, field: string, output: Array<string>) {
-  const [fieldName, fieldType, fieldArrayType] = field.split(" ");
+  const [fieldName, fieldType, , fieldArrayLength = ""] = field.split(" ");
   output.push("");
   output.push(`/** Zero the ${fieldName} field within the ${name} group. */`);
   output.push(`export function zero${capitalize(fieldName)}() {`);
-  zeroField(fieldName, fieldType, fieldArrayType, output);
+  zeroField(fieldName, fieldType, fieldArrayLength, output);
   output.push("}");
 }
 
@@ -98,42 +118,27 @@ function addZeroFunction(name: string, fields: Array<string>, output: Array<stri
   output.push(`/** Zero all fields within the ${name} group. */`);
   output.push(`export function zero${capitalize(name)}() {`);
   for (const field of fields) {
-    const [fieldName, fieldType, fieldArrayType] = field.split(" ");
-    zeroField(fieldName, fieldType, fieldArrayType, output);
+    const [fieldName, fieldType, , fieldArrayLength = ""] = field.split(" ");
+    zeroField(fieldName, fieldType, fieldArrayLength, output);
   }
   output.push("}");
 }
 
-function zeroField(name: string, type: string, arrayType: string, output: Array<string>) {
+function zeroField(name: string, type: string, arrayLength: string, output: Array<string>) {
   switch (type) {
-    case FieldType.STRING:
-      output.push(`  ${name} = ""`);
-      break;
-    case FieldType.BOOLEAN:
-      output.push(`  ${name} = false`);
-      break;
     case FieldType.NUMBER:
       output.push(`  ${name} = 0`);
       break;
     case FieldType.ARRAY:
-      switch (arrayType) {
-        case ArrayType.STRING:
-          output.push(`  ${name}.fill("")`);
-          break;
-        case ArrayType.BOOLEAN:
-          output.push(`  ${name}.fill(false)`);
-          break;
-        case ArrayType.INT_8:
-        case ArrayType.INT_16:
-        case ArrayType.INT_32:
-        case ArrayType.UINT_8:
-        case ArrayType.UINT_16:
-        case ArrayType.UINT_32:
-        case ArrayType.FLOAT_32:
-        case ArrayType.FLOAT_64:
-          output.push(`  ${name}.fill(0)`);
-          break;
+      if (isDynamicArray(type, arrayLength)) {
+        output.push(`  ${name}Count = 0`);
+      } else {
+        output.push(`  ${name}.fill(0)`);
       }
       break;
   }
+}
+
+function isDynamicArray(fieldType: string, fieldArrayLength: string) {
+  return fieldType === FieldType.ARRAY && !fieldArrayLength;
 }

@@ -3,10 +3,8 @@
 import fs from "node:fs";
 import { marked } from "marked";
 import { Type } from "./consts.js";
-import { addArrayOfStructures } from "./lib/aos.js";
 import { addGroup } from "./lib/group.js";
 import { addStructureOfArrays } from "./lib/soa.js";
-import { addStruct } from "./lib/struct.js";
 
 type Block = {
   header: string;
@@ -54,20 +52,14 @@ for (const token of tokens) {
 }
 
 for (const { header, fields } of blocks) {
-  const [_, type] = header.split(" ");
+  const [, type] = header.split(" ");
 
   switch (type) {
-    case Type.STRUCT:
-      addStruct(header, fields, output);
-      break;
     case Type.GROUP:
       addGroup(header, fields, output);
       break;
     case Type.SOA:
       addStructureOfArrays(header, fields, output);
-      break;
-    case Type.AOS:
-      addArrayOfStructures(header, output);
       break;
   }
 }
