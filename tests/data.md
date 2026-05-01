@@ -9,7 +9,6 @@
 - gArrUint32 array uint32 4
 - gArrFloat32 array float32 4
 - gArrFloat64 array float64 4
-- gArrInt16Dynamic array int16
 
 # pool soa 8
 

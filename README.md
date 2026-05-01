@@ -47,7 +47,7 @@ npx game-data-gen <input-file-path> <optional-output-file-path>
 | `array float32` | `- positions array float32 64` |
 | `array float64` | `- positions array float64 64` |
 
-Array fields without a length generate a `count` variable and `push`/`pop` functions.
+Array fields always require a length. A `count` variable and `push`/`pop` functions are generated to simulate a dynamic array within the fixed capacity.
 
 ### soa (Structure of Arrays)
 
@@ -72,7 +72,7 @@ For example `src/data.md`:
 # game group
 
 - playerId number
-- entityIds array uint16
+- entityIds array uint16 64
 
 # particle soa 10_000
 
@@ -97,7 +97,7 @@ This will create or update the `src/data.ts` file (see below). The data and func
  */
 
 export let playerId = 0;
-export const entityIds = new Uint16Array();
+export const entityIds = new Uint16Array(64);
 export let entityIdsCount = 0;
 
 /** Set the value of the playerId field within the game group. */
