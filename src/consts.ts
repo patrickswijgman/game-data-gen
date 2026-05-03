@@ -1,14 +1,4 @@
-export const enum Type {
-  SOA = "soa",
-  GROUP = "group",
-}
-
 export const enum FieldType {
-  NUMBER = "number",
-  ARRAY = "array",
-}
-
-export const enum ArrayType {
   INT_8 = "int8",
   INT_16 = "int16",
   INT_32 = "int32",

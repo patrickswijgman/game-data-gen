@@ -2,7 +2,6 @@
 
 import fs from "node:fs";
 import { marked } from "marked";
-import { Type } from "./consts.js";
 import { addGroup } from "./lib/group.js";
 import { addStructureOfArrays } from "./lib/soa.js";
 
@@ -52,15 +51,12 @@ for (const token of tokens) {
 }
 
 for (const { header, fields } of blocks) {
-  const [, type] = header.split(" ");
+  const [, length] = header.split(" ");
 
-  switch (type) {
-    case Type.GROUP:
-      addGroup(header, fields, output);
-      break;
-    case Type.SOA:
-      addStructureOfArrays(header, fields, output);
-      break;
+  if (length) {
+    addStructureOfArrays(header, fields, output);
+  } else {
+    addGroup(header, fields, output);
   }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Generated with game-data-gen on 5/1/2026, 5:55:31 PM. DO NOT MODIFY THIS FILE!
+ * Generated with game-data-gen on 5/2/2026, 2:54:59 PM. DO NOT MODIFY THIS FILE!
  */
 
 /*
@@ -198,46 +198,6 @@ export function zeroPoolAt(i: number) {
   sFloat64[i] = 0
 }
 
-/** Zero the sInt8 field within the pool structure of arrays. */
-export function zeroSInt8() {
-  sInt8.fill(0)
-}
-
-/** Zero the sInt16 field within the pool structure of arrays. */
-export function zeroSInt16() {
-  sInt16.fill(0)
-}
-
-/** Zero the sInt32 field within the pool structure of arrays. */
-export function zeroSInt32() {
-  sInt32.fill(0)
-}
-
-/** Zero the sUint8 field within the pool structure of arrays. */
-export function zeroSUint8() {
-  sUint8.fill(0)
-}
-
-/** Zero the sUint16 field within the pool structure of arrays. */
-export function zeroSUint16() {
-  sUint16.fill(0)
-}
-
-/** Zero the sUint32 field within the pool structure of arrays. */
-export function zeroSUint32() {
-  sUint32.fill(0)
-}
-
-/** Zero the sFloat32 field within the pool structure of arrays. */
-export function zeroSFloat32() {
-  sFloat32.fill(0)
-}
-
-/** Zero the sFloat64 field within the pool structure of arrays. */
-export function zeroSFloat64() {
-  sFloat64.fill(0)
-}
-
 /** Zero all fields within the pool structure of arrays. */
 export function zeroPool() {
   sInt8.fill(0)
@@ -248,4 +208,19 @@ export function zeroPool() {
   sUint32.fill(0)
   sFloat32.fill(0)
   sFloat64.fill(0)
+}
+
+/** Print an index within the pool structure of arrays to the console. */
+export function printPoolAt(i: number) {
+  console.log(`pool[${i}]`)
+  console.table({
+    sInt8: sInt8[i],
+    sInt16: sInt16[i],
+    sInt32: sInt32[i],
+    sUint8: sUint8[i],
+    sUint16: sUint16[i],
+    sUint32: sUint32[i],
+    sFloat32: sFloat32[i],
+    sFloat64: sFloat64[i],
+  })
 }

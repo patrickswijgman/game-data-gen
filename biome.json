@@ -9,7 +9,7 @@
   "formatter": {
     "indentStyle": "space",
     "lineWidth": 320,
-    "includes": ["**", "!**/tests/**/*"]
+    "includes": ["**", "!**/tests/**/*", "!**/.claude/**/*"]
   },
   "linter": {
     "rules": {
